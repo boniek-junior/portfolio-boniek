@@ -97,3 +97,21 @@ a,button{outline-offset:4px}
 .signature-universe-orbit-layer-0 .signature-universe-chip img{animation:signature-tools-revolve 85s linear infinite reverse}
 .signature-universe-orbit-layer-1 .signature-universe-chip img{animation:signature-tools-revolve 115s linear infinite}
 @media(prefers-reduced-motion:reduce){.signature-universe-chip img{animation:none!important}}
+
+/* Creative generation sequence — inspired by the feeling of an image forming. */
+.creation-grid{background-image:linear-gradient(rgba(133,233,181,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(133,233,181,.045) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse at center,#000 25%,transparent 78%)}
+.creation-beam{background:linear-gradient(90deg,transparent,rgba(133,233,181,.07),rgba(133,233,181,.18),transparent);filter:blur(18px);transform:translateX(-140%)}
+.creation-active .creation-beam{animation:creation-scan 4.8s ease-in-out infinite}
+.creation-orbit{transform:translate(-50%,-50%) rotate(0);box-shadow:0 0 28px rgba(62,207,142,.06)}
+.creation-active .creation-orbit-one{animation:creation-spin 16s linear infinite}
+.creation-active .creation-orbit-two{animation:creation-spin 11s linear infinite reverse}
+.creation-core{transform:translate(-50%,-50%);animation:creation-pulse 3.2s ease-in-out infinite}
+.creation-spark{opacity:.3;box-shadow:0 0 14px rgba(133,233,181,.6)}
+.creation-active .creation-spark{animation:creation-float 3.6s ease-in-out infinite alternate}
+.creation-status-dot{box-shadow:0 0 12px #85e9b5;animation:creation-blink 1.8s ease-in-out infinite}
+@keyframes creation-scan{0%{transform:translateX(-140%);opacity:0}25%{opacity:1}80%{opacity:1}100%{transform:translateX(360%);opacity:0}}
+@keyframes creation-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes creation-pulse{0%,100%{transform:translate(-50%,-50%) scale(.94);box-shadow:0 0 22px #3ecf8e20}50%{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 0 65px #3ecf8e55}}
+@keyframes creation-float{0%{transform:translate3d(-8px,6px,0) scale(.6);opacity:.15}100%{transform:translate3d(12px,-11px,0) scale(1.25);opacity:.9}}
+@keyframes creation-blink{50%{opacity:.3}}
+@media(prefers-reduced-motion:reduce){.creation-stage *{animation:none!important}.creation-beam{transform:none;opacity:.2}}
