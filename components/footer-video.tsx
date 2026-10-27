@@ -18,7 +18,7 @@ export function FooterVideo(){
   updateMotion();motion.addEventListener('change',updateMotion);
   let player:Hls|undefined;
   let disposed=false;
-  let retry:number|undefined;
+  
   const attemptPlay=()=>{
    if(disposed||motion.matches||document.hidden)return;
    video.muted=true;
@@ -55,13 +55,13 @@ export function FooterVideo(){
    player.loadSource(STREAM);
   }else setFailed(true);
   attemptPlay();
-  retry=window.setInterval(()=>{
+  const retry=window.setInterval(()=>{
    if(!video.paused||document.hidden||motion.matches)return;
    attemptPlay();
   },5000);
   return ()=>{
    disposed=true;
-   if(retry!==undefined)window.clearInterval(retry);
+   window.clearInterval(retry);
    motion.removeEventListener('change',updateMotion);
    video.removeEventListener('playing',onPlaying);
    video.removeEventListener('pause',onPause);
