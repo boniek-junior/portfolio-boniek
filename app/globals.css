@@ -48,3 +48,7 @@ a,button{outline-offset:4px}
 @keyframes signature-hover{0%,100%{translate:0 0}50%{translate:0 -7px}}
 @keyframes signature-breathe{0%,100%{opacity:.6;scale:.96}50%{opacity:1;scale:1.08}}
 @media(prefers-reduced-motion:reduce){.signature-orbit,.signature-satellite,.signature-node,.signature-aura{animation:none!important}}
+
+/* Cinematic footer: translucent CTA with a light-catching glass rim. */
+.liquid-glass-strong{position:relative;isolation:isolate;overflow:hidden;background:rgba(255,255,255,.035);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);box-shadow:4px 4px 18px rgba(0,0,0,.12),inset 0 1px 1px rgba(255,255,255,.16)}
+.liquid-glass-strong::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,.15) 25%,transparent 45%,transparent 55%,rgba(255,255,255,.2) 80%,rgba(255,255,255,.5));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
