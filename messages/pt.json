@@ -74,7 +74,14 @@
     "title": "Ferramentas são meios. O impacto é o objetivo.",
     "role": "Estagiário de Desenvolvimento Fullstack",
     "company": "Just · Tecnologia jurídica",
-    "stack": "TECNOLOGIAS COM QUE TRABALHO"
+    "stack": "TECNOLOGIAS COM QUE TRABALHO",
+    "scrollHint": "Continue rolando para explorar as tecnologias em uma jornada horizontal.",
+    "toolkitTitle": "Ferramentas que dão vida às ideias.",
+    "scrollExplore": "ROLE PARA EXPLORAR →",
+    "scrollEnter": "ROLE PARA COMEÇAR",
+    "scrollEnd": "FIM DA JORNADA ↓",
+    "scrollJourney": "JORNADA HORIZONTAL",
+    "scrollAll": "TODAS AS FERRAMENTAS"
   },
   "contact": {
     "eyebrow": "05 / CONTATO",
