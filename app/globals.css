@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-:root{color-scheme:dark;--canvas:#080d0a;--surface:#13231a;--accent:#36b56a;--glow:#9af5b5;--text:#f4f5f8}
+:root{color-scheme:dark;--canvas:#0c0c0c;--surface:#1c1c1c;--accent:#3ecf8e;--glow:#85e9b5;--text:#f4f5f8}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:6rem}
 body{margin:0;background:var(--canvas);color:var(--text);font-family:Inter,"Segoe UI Variable","Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
@@ -7,19 +7,19 @@ h1,h2,h3{font-family:"Space Grotesk",Inter,"Segoe UI Variable",Arial,sans-serif;
 p{text-wrap:pretty}
 a,button{outline-offset:4px}
 :focus-visible{outline:2px solid var(--glow);border-radius:4px}
-::selection{background:#36b56a;color:white}
+::selection{background:#3ecf8e;color:white}
 .noise{background-image:radial-gradient(#ffffff0a .5px,transparent .5px);background-size:6px 6px}
 .gridline{background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:80px 80px}
-.glass{background:#0c1322bb;backdrop-filter:blur(20px)}
-.outline-text{-webkit-text-stroke:1px #9af5b555;color:transparent}
-.skip-link{position:fixed;left:1rem;top:-5rem;z-index:100;background:white;color:#080d0a;padding:.8rem 1rem;border-radius:.5rem}
+.glass{background:#161616dd;backdrop-filter:blur(20px)}
+.outline-text{-webkit-text-stroke:1px #85e9b555;color:transparent}
+.skip-link{position:fixed;left:1rem;top:-5rem;z-index:100;background:white;color:#0c0c0c;padding:.8rem 1rem;border-radius:.5rem}
 .skip-link:focus{top:1rem}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 /* Spatial depth, with a motion-safe fallback */
 .tilt-stage{isolation:isolate;transform-style:preserve-3d}
 .tilt-stage-inner{will-change:transform;backface-visibility:hidden}
-.tilt-stage-inner::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(125deg,transparent 35%,#9af5b50a 55%,transparent 75%);opacity:.7}
+.tilt-stage-inner::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(125deg,transparent 35%,#85e9b50a 55%,transparent 75%);opacity:.7}
 @media(prefers-reduced-motion:reduce){.tilt-stage-inner{transform:none!important;transition:none!important}}
 @media(hover:none){.tilt-stage-inner{transform:none!important}}
 
@@ -34,7 +34,7 @@ a,button{outline-offset:4px}
 
 /* Signature 001: concentric orbital visualization */
 .signature-system{isolation:isolate;transform-style:preserve-3d}
-.signature-orbit{aspect-ratio:1;border:1px solid transparent;background:linear-gradient(#080d0a,#080d0a) padding-box,conic-gradient(from 10deg,transparent 0deg,#89efab9c 72deg,transparent 155deg,#6cdb9091 244deg,transparent 325deg) border-box;box-shadow:0 0 32px #69d98b0b,inset 0 0 30px #69d98b09;transform:translate(-50%,-50%)}
+.signature-orbit{aspect-ratio:1;border:1px solid transparent;background:linear-gradient(#0c0c0c,#0c0c0c) padding-box,conic-gradient(from 10deg,transparent 0deg,#7fdca99c 72deg,transparent 155deg,#60c99191 244deg,transparent 325deg) border-box;box-shadow:0 0 32px #3ecf8e0b,inset 0 0 30px #3ecf8e09;transform:translate(-50%,-50%)}
 .signature-orbit-1{width:50%;animation:signature-spin-left 30s linear infinite}
 .signature-orbit-2{width:72%;animation:signature-spin-right 40s linear infinite}
 .signature-orbit-3{width:94%;animation:signature-spin-left 60s linear infinite}
