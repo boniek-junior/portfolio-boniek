@@ -54,7 +54,14 @@
     "title": "Tools are a means. Impact is the goal.",
     "role": "Fullstack Software Development Intern",
     "company": "Just · Legal technology",
-    "stack": "TECHNOLOGIES I WORK WITH"
+    "stack": "TECHNOLOGIES I WORK WITH",
+    "scrollHint": "Keep scrolling to explore the technologies in a horizontal journey.",
+    "toolkitTitle": "Tools that bring ideas to life.",
+    "scrollExplore": "SCROLL TO EXPLORE →",
+    "scrollEnter": "SCROLL DOWN TO ENTER",
+    "scrollEnd": "END OF JOURNEY ↓",
+    "scrollJourney": "HORIZONTAL JOURNEY",
+    "scrollAll": "ALL TOOLS"
   },
   "contact": {
     "eyebrow": "05 / CONTACT",
