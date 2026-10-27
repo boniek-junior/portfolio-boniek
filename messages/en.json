@@ -63,5 +63,10 @@
     "github": "View GitHub",
     "email": "Get in touch",
     "footer": "Built with curiosity and intention."
+  },
+  "signature": {
+    "title": "Creation is connection.",
+    "description": "Software, artificial intelligence and design are not isolated disciplines. They come together to turn ideas into experiences that make sense — and actually work.",
+    "hint": "INTERACT WITH THE ORBITAL NODES"
   }
 }
