@@ -84,3 +84,11 @@ a,button{outline-offset:4px}
 @keyframes signature-orbit-drift{0%{transform:translate(-12px,-10px)}50%{transform:translate(15px,-17px)}100%{transform:translate(20px,14px)}}
 @media(max-width:640px){.signature-universe-plate{mask-image:linear-gradient(to bottom,transparent 0%,#000 25%,#000 75%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 25%,#000 75%,transparent 100%)}}
 @media(prefers-reduced-motion:reduce){.signature-universe-ring,.signature-universe-satellite{animation:none}}
+
+.signature-universe-orbit-layer{animation:signature-tools-revolve 85s linear infinite;will-change:transform}
+.signature-universe-orbit-layer-1{animation-duration:115s;animation-direction:reverse}
+.signature-universe-orbit-layer-0 .signature-universe-chip{animation:signature-tools-revolve 85s linear infinite reverse}
+.signature-universe-orbit-layer-1 .signature-universe-chip{animation:signature-tools-revolve 115s linear infinite}
+.signature-universe-satellite{animation:none}
+@keyframes signature-tools-revolve{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.signature-universe-orbit-layer,.signature-universe-chip{animation:none!important}}
