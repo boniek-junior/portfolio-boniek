@@ -55,10 +55,10 @@ export function TechnologyJourney({items,eyebrow,title,explore,enter,end,journey
   <div className={motionReduced?'relative overflow-hidden py-20':'sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden py-20'}>
    <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_65%_50%,#235e4226,transparent_60%)]"/>
    <div className="relative mx-auto w-full max-w-7xl px-6 md:px-12">
-    <div className="flex items-end justify-between gap-6">
+    <div className="flex items-center justify-center gap-6 text-center">
      <div><p className="font-mono text-[10px] tracking-[.28em] text-[#85e9b5]">{eyebrow} / TOOLKIT</p>
       <h3 className="mt-4 max-w-3xl text-3xl font-semibold tracking-[-.06em] sm:text-5xl">{title}<span className="text-[#85e9b5]">.</span></h3></div>
-     <span aria-live="off" className="hidden font-mono text-xs tabular-nums text-white/50 sm:block">{String(Math.min(items.length,Math.floor(progress*items.length)+1)).padStart(2,'0')} / {String(items.length).padStart(2,'0')}</span>
+     <span aria-live="off" className="absolute right-6 hidden font-mono text-xs tabular-nums text-white/50 sm:block md:right-12">{String(Math.min(items.length,Math.floor(progress*items.length)+1)).padStart(2,'0')} / {String(items.length).padStart(2,'0')}</span>
     </div>
     <div className="mt-8 h-[2px] w-full overflow-hidden rounded-full bg-white/10"><div className="h-full origin-left bg-gradient-to-r from-[#3ecf8e] to-[#85e9b5]" style={{transform:`scaleX(${motionReduced?1:progress})`,transition:'transform 100ms linear'}}/></div>
    </div>
