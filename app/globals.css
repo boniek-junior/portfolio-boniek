@@ -67,36 +67,24 @@ a,button{outline-offset:4px}
 .footer-glass-green{background:rgba(8,30,20,.34)!important;box-shadow:0 10px 35px rgba(0,0,0,.22),inset 0 1px 1px rgba(133,233,181,.17)!important}
 .footer-glass-green::before{background:linear-gradient(180deg,rgba(133,233,181,.65),rgba(62,207,142,.2) 25%,transparent 45%,transparent 55%,rgba(62,207,142,.22) 80%,rgba(133,233,181,.6))!important}
 
-/* The Signature / 001: cinematic particle universe and interactive orbiting tools. */
-.signature-universe-scene{isolation:isolate}
-.signature-universe-glow{background:radial-gradient(circle,rgba(62,207,142,.20),rgba(62,207,142,.07) 43%,transparent 72%);filter:blur(42px)}
-.signature-universe-plate{mask-image:radial-gradient(ellipse 65% 61% at 50% 50%,#000 43%,rgba(0,0,0,.82) 63%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 65% 61% at 50% 50%,#000 43%,rgba(0,0,0,.82) 63%,transparent 100%)}
-.signature-universe-media{filter:grayscale(1) sepia(.72) hue-rotate(87deg) saturate(2.2) brightness(.67) contrast(1.17)}
-.signature-universe-ring{border:1px solid rgba(133,233,181,.15);box-shadow:0 0 30px rgba(62,207,142,.045),inset 0 0 28px rgba(62,207,142,.025);transform:rotateX(17deg);pointer-events:none}
-.signature-universe-ring-a{border-style:dashed;animation:signature-ring-turn 65s linear infinite}
-.signature-universe-ring-b{border-color:rgba(133,233,181,.10);animation:signature-ring-turn 90s linear infinite reverse}
-.signature-universe-ring-c{border-color:rgba(133,233,181,.12);animation:signature-ring-turn 42s linear infinite}
-.signature-universe-satellite{animation:signature-orbit-drift 38s ease-in-out infinite alternate;will-change:transform}
-.signature-universe-satellite-1{animation-duration:52s;animation-direction:alternate-reverse}
-.signature-universe-chip{transform:translate(-50%,-50%);position:relative}
-.signature-universe-chip::after{content:'';position:absolute;inset:-5px;border-radius:inherit;border:1px solid rgba(133,233,181,.12);pointer-events:none}
-@keyframes signature-ring-turn{to{transform:rotateX(17deg) rotate(360deg)}}
-@keyframes signature-orbit-drift{0%{transform:translate(-12px,-10px)}50%{transform:translate(15px,-17px)}100%{transform:translate(20px,14px)}}
-@media(max-width:640px){.signature-universe-plate{mask-image:linear-gradient(to bottom,transparent 0%,#000 25%,#000 75%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 25%,#000 75%,transparent 100%)}}
-@media(prefers-reduced-motion:reduce){.signature-universe-ring,.signature-universe-satellite{animation:none}}
-
-.signature-universe-orbit-layer{animation:signature-tools-revolve 85s linear infinite;will-change:transform}
-.signature-universe-orbit-layer-1{animation-duration:115s;animation-direction:reverse}
-.signature-universe-orbit-layer-0 .signature-universe-chip{animation:signature-tools-revolve 85s linear infinite reverse}
-.signature-universe-orbit-layer-1 .signature-universe-chip{animation:signature-tools-revolve 115s linear infinite}
-.signature-universe-satellite{animation:none}
-@keyframes signature-tools-revolve{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.signature-universe-orbit-layer,.signature-universe-chip{animation:none!important}}
-
-.signature-universe-orbit-layer-0 .signature-universe-chip,.signature-universe-orbit-layer-1 .signature-universe-chip{animation:none}
-.signature-universe-orbit-layer-0 .signature-universe-chip img{animation:signature-tools-revolve 85s linear infinite reverse}
-.signature-universe-orbit-layer-1 .signature-universe-chip img{animation:signature-tools-revolve 115s linear infinite}
-@media(prefers-reduced-motion:reduce){.signature-universe-chip img{animation:none!important}}
+/* Signature / 001 — contained cinematic universe, no rectangular video plate. */
+.signature-cosmos-stage{isolation:isolate}
+.signature-cosmos-halo{background:radial-gradient(circle,rgba(62,207,142,.13),rgba(62,207,142,.035) 48%,transparent 75%);filter:blur(30px)}
+.signature-cosmos-orbit{border:1px solid rgba(133,233,181,.17);box-shadow:0 0 30px rgba(62,207,142,.035),inset 0 0 30px rgba(62,207,142,.025)}
+.signature-cosmos-orbit-inner{border-style:dashed;border-color:rgba(133,233,181,.14)}
+.signature-cosmos-orbit-outer::before,.signature-cosmos-orbit-inner::before{content:'';position:absolute;inset:-1px;border-radius:50%;border-top:1px solid rgba(133,233,181,.55);border-right:1px solid transparent;animation:cosmos-ring 28s linear infinite}
+.signature-cosmos-orbit-inner::before{animation-duration:37s;animation-direction:reverse}
+.signature-cosmos-globe{border:1px solid rgba(133,233,181,.22);box-shadow:0 0 60px rgba(62,207,142,.12),inset 0 0 45px #000}
+.signature-cosmos-media{filter:grayscale(1) sepia(1) hue-rotate(75deg) saturate(2) brightness(.72) contrast(1.25);transform:scale(1.8);object-position:center 73%}
+.signature-cosmos-shade{background:radial-gradient(circle at 45% 42%,transparent 20%,rgba(5,17,10,.25) 58%,#07110b 100%);box-shadow:inset 0 0 45px #07110b}
+.signature-cosmos-track{animation:cosmos-ring 85s linear infinite}
+.signature-cosmos-track-1{animation-duration:110s;animation-direction:reverse}
+.signature-cosmos-node{transform:translate(-50%,-50%)}
+.signature-cosmos-counter{animation:cosmos-ring 85s linear infinite reverse}
+.signature-cosmos-track-1 .signature-cosmos-counter{animation-duration:110s;animation-direction:normal}
+.signature-cosmos-chip{transform:translateZ(0)}
+@keyframes cosmos-ring{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.signature-cosmos-orbit::before,.signature-cosmos-track,.signature-cosmos-counter{animation:none!important}}
 
 /* Creative generation sequence — inspired by the feeling of an image forming. */
 .creation-grid{background-image:linear-gradient(rgba(133,233,181,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(133,233,181,.045) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse at center,#000 25%,transparent 78%)}
