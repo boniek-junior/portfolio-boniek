@@ -66,3 +66,21 @@ a,button{outline-offset:4px}
 .footer-video-tint{filter:grayscale(1) sepia(.42) hue-rotate(87deg) saturate(1.5) brightness(.75) contrast(1.12)}
 .footer-glass-green{background:rgba(8,30,20,.34)!important;box-shadow:0 10px 35px rgba(0,0,0,.22),inset 0 1px 1px rgba(133,233,181,.17)!important}
 .footer-glass-green::before{background:linear-gradient(180deg,rgba(133,233,181,.65),rgba(62,207,142,.2) 25%,transparent 45%,transparent 55%,rgba(62,207,142,.22) 80%,rgba(133,233,181,.6))!important}
+
+/* The Signature / 001: cinematic particle universe and interactive orbiting tools. */
+.signature-universe-scene{isolation:isolate}
+.signature-universe-glow{background:radial-gradient(circle,rgba(62,207,142,.20),rgba(62,207,142,.07) 43%,transparent 72%);filter:blur(42px)}
+.signature-universe-plate{mask-image:radial-gradient(ellipse 65% 61% at 50% 50%,#000 43%,rgba(0,0,0,.82) 63%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 65% 61% at 50% 50%,#000 43%,rgba(0,0,0,.82) 63%,transparent 100%)}
+.signature-universe-media{filter:grayscale(1) sepia(.72) hue-rotate(87deg) saturate(2.2) brightness(.67) contrast(1.17)}
+.signature-universe-ring{border:1px solid rgba(133,233,181,.15);box-shadow:0 0 30px rgba(62,207,142,.045),inset 0 0 28px rgba(62,207,142,.025);transform:rotateX(17deg);pointer-events:none}
+.signature-universe-ring-a{border-style:dashed;animation:signature-ring-turn 65s linear infinite}
+.signature-universe-ring-b{border-color:rgba(133,233,181,.10);animation:signature-ring-turn 90s linear infinite reverse}
+.signature-universe-ring-c{border-color:rgba(133,233,181,.12);animation:signature-ring-turn 42s linear infinite}
+.signature-universe-satellite{animation:signature-orbit-drift 38s ease-in-out infinite alternate;will-change:transform}
+.signature-universe-satellite-1{animation-duration:52s;animation-direction:alternate-reverse}
+.signature-universe-chip{transform:translate(-50%,-50%);position:relative}
+.signature-universe-chip::after{content:'';position:absolute;inset:-5px;border-radius:inherit;border:1px solid rgba(133,233,181,.12);pointer-events:none}
+@keyframes signature-ring-turn{to{transform:rotateX(17deg) rotate(360deg)}}
+@keyframes signature-orbit-drift{0%{transform:translate(-12px,-10px)}50%{transform:translate(15px,-17px)}100%{transform:translate(20px,14px)}}
+@media(max-width:640px){.signature-universe-plate{mask-image:linear-gradient(to bottom,transparent 0%,#000 25%,#000 75%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 25%,#000 75%,transparent 100%)}}
+@media(prefers-reduced-motion:reduce){.signature-universe-ring,.signature-universe-satellite{animation:none}}
