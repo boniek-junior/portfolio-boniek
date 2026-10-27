@@ -1,66 +1,64 @@
 'use client';
 
-import {useEffect,useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
 
-const principles=[
- {name:'BUILD',detail:'01 / ENGINEERING',angle:-90,orbit:1,color:'#85e9b5'},
- {name:'DESIGN',detail:'02 / EXPERIENCE',angle:25,orbit:2,color:'#86dfab'},
- {name:'LEARN',detail:'03 / CURIOSITY',angle:155,orbit:2,color:'#9ae9c0'},
- {name:'SHIP',detail:'04 / IMPACT',angle:220,orbit:3,color:'#7cdaa4'},
- {name:'EXPLORE',detail:'05 / POSSIBILITY',angle:315,orbit:3,color:'#a3e9c2'},
+const STILL='https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/f1631235-0a76-464d-8f1d-2c4b48a997d5.jpg';
+const VIDEO='https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/e71aea27-a808-4ae3-8231-a469d49285d4.mp4';
+const tools=[
+ {name:'React',company:'Meta',logo:'react/react-original.svg',orbit:0,angle:-72},
+ {name:'TypeScript',company:'Microsoft',logo:'typescript/typescript-original.svg',orbit:1,angle:-37},
+ {name:'Python',company:'Python Software Foundation',logo:'python/python-original.svg',orbit:0,angle:19},
+ {name:'Next.js',company:'Vercel',logo:'nextjs/nextjs-original.svg',orbit:1,angle:55},
+ {name:'Supabase',company:'Supabase',logo:'supabase/supabase-original.svg',orbit:0,angle:135},
+ {name:'Java',company:'Oracle',logo:'java/java-original.svg',orbit:1,angle:171},
+ {name:'Docker',company:'Docker',logo:'docker/docker-original.svg',orbit:0,angle:225},
+ {name:'Git',company:'Open source',logo:'git/git-original.svg',orbit:1,angle:258},
 ] as const;
 
-function useCountUp(target:number,enabled:boolean){
- const [value,setValue]=useState(0);
- useEffect(()=>{
-  if(!enabled)return;
-  let frame=0;
-  const start=performance.now();
-  const tick=(now:number)=>{
-   const p=Math.min((now-start)/1800,1);
-   setValue(Math.round(target*(1-Math.pow(1-p,3))));
-   if(p<1)frame=requestAnimationFrame(tick);
-  };
-  frame=requestAnimationFrame(tick);
-  return ()=>cancelAnimationFrame(frame);
- },[enabled,target]);
- return value;
-}
-
 export function OrbitSignature(){
+ const video=useRef<HTMLVideoElement>(null);
+ const [playing,setPlaying]=useState(false);
  const [selected,setSelected]=useState<number|null>(null);
- const [ready,setReady]=useState(false);
- const count=useCountUp(5,ready);
+ const [reduced,setReduced]=useState(false);
  useEffect(()=>{
-  const element=document.getElementById('signature-orbit');
-  if(!element)return;
-  const observer=new IntersectionObserver(entries=>{
-   if(entries[0]?.isIntersecting){setReady(true);observer.disconnect();}
-  },{threshold:.15});
-  observer.observe(element);
-  return ()=>observer.disconnect();
+  const query=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const sync=()=>setReduced(query.matches);
+  sync();query.addEventListener('change',sync);
+  return ()=>query.removeEventListener('change',sync);
  },[]);
- return <div id="signature-orbit" className="signature-system relative mx-auto aspect-square w-full max-w-[610px] select-none" aria-label="Interactive orbit of five creative principles">
-  <div className="signature-aura pointer-events-none absolute inset-[18%] rounded-full bg-[#299965]/20 blur-[72px]" aria-hidden="true"/>
-  {[1,2,3].map((orbit)=><div key={orbit} aria-hidden="true" className={`signature-orbit signature-orbit-${orbit} pointer-events-none absolute left-1/2 top-1/2 rounded-full`}/>)}
-  <div aria-hidden="true" className="signature-center absolute left-1/2 top-1/2 z-10 flex aspect-square w-[29%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-[#9ae9c0]/25 bg-[#171b18]/95 text-center shadow-[0_0_90px_#3ecf8e25,inset_0_0_35px_#3ecf8e15]">
-   <span className="font-mono text-[9px] tracking-[.25em] text-[#85e9b5]/60 sm:text-xs">THE CORE</span>
-   <span className="mt-1 font-semibold text-4xl tracking-[-.1em] text-white sm:text-6xl">{count.toString().padStart(2,'0')}</span>
-   <span className="mt-1 font-mono text-[8px] tracking-[.12em] text-white/50 sm:text-[10px]">PRINCIPLES</span>
+ useEffect(()=>{
+  const el=video.current;
+  if(!el||reduced)return;
+  const observer=new IntersectionObserver(([entry])=>{
+   if(entry.isIntersecting){void el.play().catch(()=>setPlaying(false));}
+   else el.pause();
+  },{threshold:.08});
+  observer.observe(el);
+  return ()=>{observer.disconnect();el.pause();};
+ },[reduced]);
+ return <div className="signature-universe relative mx-auto w-full max-w-[850px]" aria-label="Universo de tecnologias orbitando um globo luminoso">
+  <div className="signature-universe-scene relative mx-auto aspect-square w-full">
+   <div aria-hidden="true" className="signature-universe-glow absolute inset-[16%] rounded-full"/>
+   <div className="signature-universe-plate pointer-events-none absolute inset-[-4%] overflow-hidden" aria-hidden="true">
+    <img src={STILL} alt="" loading="lazy" className="signature-universe-media absolute inset-0 h-full w-full object-cover"/>
+    {!reduced&&<video ref={video} src={VIDEO} muted loop playsInline preload="none" onLoadedData={()=>{setPlaying(true);}} className={`signature-universe-media absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${playing?'opacity-100':'opacity-0'}`}/>}
+   </div>
+   <div aria-hidden="true" className="signature-universe-ring signature-universe-ring-a absolute inset-[14%] rounded-full"/>
+   <div aria-hidden="true" className="signature-universe-ring signature-universe-ring-b absolute inset-[5%] rounded-full"/>
+   <div aria-hidden="true" className="signature-universe-ring signature-universe-ring-c absolute inset-[24%] rounded-full"/>
+   {tools.map((item,i)=>{
+    const angle=item.angle*Math.PI/180;
+    const radius=item.orbit===0?35:45;
+    const x=50+Math.cos(angle)*radius;
+    const y=50+Math.sin(angle)*radius;
+    return <div key={item.name} className={`signature-universe-satellite signature-universe-satellite-${item.orbit} absolute z-20`} style={{left:`${x}%`,top:`${y}%`,animationDelay:`${-i*3.7}s`}}>
+     <button type="button" onClick={()=>setSelected(selected===i?null:i)} aria-pressed={selected===i} aria-label={`${item.name} — ${item.company}`} title={`${item.name} · ${item.company}`} className={`signature-universe-chip group flex size-11 items-center justify-center rounded-2xl border border-[#85e9b5]/30 bg-[#0b1711]/85 p-2 shadow-[0_8px_32px_#000a,inset_0_1px_#ffffff20] backdrop-blur-xl transition-all hover:scale-125 hover:border-[#85e9b5] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#85e9b5] sm:size-16 sm:p-3 ${selected===i?'border-[#85e9b5] shadow-[0_0_35px_#3ecf8e70]':''}`}>
+      <img src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${item.logo}`} alt="" loading="lazy" width="48" height="48" className={`h-full w-full object-contain ${item.name==='Next.js'?'brightness-0 invert':''}`}/>
+     </button>
+    </div>;
+   })}
+   <div className="pointer-events-none absolute inset-x-0 bottom-[9%] z-10 text-center"><span className="font-mono text-[9px] tracking-[.35em] text-[#85e9b5]/75 sm:text-xs">THE UNIVERSE / 001</span></div>
   </div>
-  {principles.map((item,i)=>{
-   const angle=item.angle*Math.PI/180;
-   const radius=item.orbit===1?25:item.orbit===2?36:47;
-   const x=50+Math.cos(angle)*radius;
-   const y=50+Math.sin(angle)*radius;
-   return <div key={item.name} className="signature-satellite absolute z-20" style={{left:`${x}%`,top:`${y}%`,animationDelay:`${.4+i*.17}s`}}>
-    <button type="button" onClick={()=>setSelected(selected===i?null:i)} aria-pressed={selected===i} aria-label={`${item.name}: ${item.detail}`} className={`signature-node group relative flex h-[54px] w-[54px] flex-col items-center justify-center rounded-2xl border bg-[#102219]/95 shadow-[0_0_25px_#3ecf8e25] transition-all duration-300 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#85e9b5] sm:h-[76px] sm:w-[76px] ${selected===i?'border-[#b2f1cf] shadow-[0_0_35px_#3ecf8e60]':'border-[#85e9b5]/35 hover:border-[#b2f1cf]'}`}>
-     <span aria-hidden="true" className="absolute -top-1 -right-1 h-2 w-2 rounded-full" style={{background:item.color,boxShadow:`0 0 14px ${item.color}`}}/>
-     <span className="font-mono text-[8px] font-semibold tracking-[.06em] text-white sm:text-[10px]">{item.name}</span>
-     <span className="mt-1 h-[2px] w-4 rounded-full opacity-80 sm:w-6" style={{background:item.color}}/>
-    </button>
-   </div>;
-  })}
-  <div aria-live="polite" className="absolute bottom-0 left-1/2 z-20 w-full -translate-x-1/2 text-center font-mono text-[9px] tracking-[.2em] text-[#95e8b8]/70 sm:text-[11px]">{selected===null?'SELECT A NODE / EXPLORE THE SYSTEM':principles[selected].detail}</div>
+  <div aria-live="polite" className="relative z-30 mx-auto mt-2 min-h-12 text-center font-mono text-[10px] tracking-[.16em] text-white/60 sm:text-xs">{selected===null?'EXPLORE THE ORBIT · SELECT A TECHNOLOGY':`${tools[selected].name.toUpperCase()} / ${tools[selected].company.toUpperCase()}`}</div>
  </div>;
 }
