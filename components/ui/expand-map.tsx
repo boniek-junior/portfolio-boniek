@@ -66,7 +66,7 @@ export function LocationMap({
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleClick() } }}
     >
       <motion.div
-        className="relative overflow-hidden rounded-2xl bg-[#0c1b12] border border-white/15"
+        className="relative overflow-hidden rounded-2xl bg-[#171b18] border border-white/15"
         style={{
           rotateX: springRotateX,
           rotateY: springRotateY,
@@ -94,7 +94,7 @@ export function LocationMap({
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, delay: 0.1 }}
             >
-              <div className="absolute inset-0 bg-[#142b1d]" />
+              <div className="absolute inset-0 bg-[#202820]" />
 
               <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
                 {/* Main roads - using foreground with opacity */}
@@ -103,7 +103,7 @@ export function LocationMap({
                   y1="35%"
                   x2="100%"
                   y2="35%"
-                  className="stroke-[#9af5b5]/25"
+                  className="stroke-[#85e9b5]/25"
                   strokeWidth="4"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -114,7 +114,7 @@ export function LocationMap({
                   y1="65%"
                   x2="100%"
                   y2="65%"
-                  className="stroke-[#9af5b5]/25"
+                  className="stroke-[#85e9b5]/25"
                   strokeWidth="4"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -127,7 +127,7 @@ export function LocationMap({
                   y1="0%"
                   x2="30%"
                   y2="100%"
-                  className="stroke-[#9af5b5]/20"
+                  className="stroke-[#85e9b5]/20"
                   strokeWidth="3"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -138,7 +138,7 @@ export function LocationMap({
                   y1="0%"
                   x2="70%"
                   y2="100%"
-                  className="stroke-[#9af5b5]/20"
+                  className="stroke-[#85e9b5]/20"
                   strokeWidth="3"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -153,7 +153,7 @@ export function LocationMap({
                     y1={`${y}%`}
                     x2="100%"
                     y2={`${y}%`}
-                    className="stroke-[#9af5b5]/10"
+                    className="stroke-[#85e9b5]/10"
                     strokeWidth="1.5"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
@@ -167,7 +167,7 @@ export function LocationMap({
                     y1="0%"
                     x2={`${x}%`}
                     y2="100%"
-                    className="stroke-[#9af5b5]/10"
+                    className="stroke-[#85e9b5]/10"
                     strokeWidth="1.5"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
@@ -178,37 +178,37 @@ export function LocationMap({
 
               {/* Buildings - using muted-foreground */}
               <motion.div
-                className="absolute top-[40%] left-[10%] w-[15%] h-[20%] rounded-sm bg-[#9af5b5]/30 border border-[#9af5b5]/20"
+                className="absolute top-[40%] left-[10%] w-[15%] h-[20%] rounded-sm bg-[#85e9b5]/30 border border-[#85e9b5]/20"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.5 }}
               />
               <motion.div
-                className="absolute top-[15%] left-[35%] w-[12%] h-[15%] rounded-sm bg-[#9af5b5]/25 border border-[#9af5b5]/15"
+                className="absolute top-[15%] left-[35%] w-[12%] h-[15%] rounded-sm bg-[#85e9b5]/25 border border-[#85e9b5]/15"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.6 }}
               />
               <motion.div
-                className="absolute top-[70%] left-[75%] w-[18%] h-[18%] rounded-sm bg-[#9af5b5]/28 border border-[#9af5b5]/18"
+                className="absolute top-[70%] left-[75%] w-[18%] h-[18%] rounded-sm bg-[#85e9b5]/28 border border-[#85e9b5]/18"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.7 }}
               />
               <motion.div
-                className="absolute top-[20%] right-[10%] w-[10%] h-[25%] rounded-sm bg-[#9af5b5]/22 border border-[#9af5b5]/15"
+                className="absolute top-[20%] right-[10%] w-[10%] h-[25%] rounded-sm bg-[#85e9b5]/22 border border-[#85e9b5]/15"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.55 }}
               />
               <motion.div
-                className="absolute top-[55%] left-[5%] w-[8%] h-[12%] rounded-sm bg-[#9af5b5]/20 border border-[#9af5b5]/12"
+                className="absolute top-[55%] left-[5%] w-[8%] h-[12%] rounded-sm bg-[#85e9b5]/20 border border-[#85e9b5]/12"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.65 }}
               />
               <motion.div
-                className="absolute top-[8%] left-[75%] w-[14%] h-[10%] rounded-sm bg-[#9af5b5]/22 border border-[#9af5b5]/15"
+                className="absolute top-[8%] left-[75%] w-[14%] h-[10%] rounded-sm bg-[#85e9b5]/22 border border-[#85e9b5]/15"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.75 }}
@@ -228,8 +228,8 @@ export function LocationMap({
                   className="drop-shadow-lg"
                   style={{ filter: "drop-shadow(0 0 10px rgba(165, 184, 255, 0.5))" }}
                 >
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#9af5b5" />
-                  <circle cx="12" cy="9" r="2.5" className="fill-[#0c1b12]" />
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#85e9b5" />
+                  <circle cx="12" cy="9" r="2.5" className="fill-[#171b18]" />
                 </svg>
               </motion.div>
 
@@ -247,7 +247,7 @@ export function LocationMap({
           <svg width="100%" height="100%" className="absolute inset-0">
             <defs>
               <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                <path d="M 20 0 L 0 0 0 20" fill="none" className="stroke-[#9af5b5]" strokeWidth="0.5" />
+                <path d="M 20 0 L 0 0 0 20" fill="none" className="stroke-[#85e9b5]" strokeWidth="0.5" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
@@ -276,7 +276,7 @@ export function LocationMap({
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="text-[#9af5b5]"
+                  className="text-[#85e9b5]"
                   animate={{
                     filter: isHovered
                       ? "drop-shadow(0 0 8px rgba(165, 184, 255, 0.6))"
@@ -300,7 +300,7 @@ export function LocationMap({
               }}
               transition={{ duration: 0.2 }}
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-[#9af5b5]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#85e9b5]" />
               <span className="text-[10px] font-medium text-white/55 tracking-wide uppercase">Live</span>
             </motion.div>
           </div>
@@ -333,7 +333,7 @@ export function LocationMap({
 
             {/* Animated underline */}
             <motion.div
-              className="h-px bg-gradient-to-r from-[#36b56a]/70 via-[#9af5b5]/40 to-transparent"
+              className="h-px bg-gradient-to-r from-[#3ecf8e]/70 via-[#85e9b5]/40 to-transparent"
               initial={{ scaleX: 0, originX: 0 }}
               animate={{
                 scaleX: isHovered || isExpanded ? 1 : 0.3,
