@@ -32,7 +32,10 @@
     "description": "My journey in software development has taken me through Estácio, where I studied with a ProUni scholarship, CESAR School and now Just, a legal technology company. I care about building useful software and understanding the problems behind it.",
     "timeline1": "Estácio / ProUni",
     "timeline2": "CESAR School",
-    "timeline3": "Just / Fullstack Internship"
+    "timeline3": "Just / Fullstack Internship",
+    "careerLabel": "PREVIOUS EXPERIENCE",
+    "formerInstructor": "Programming Instructor (former)",
+    "businessSystems": "Business systems and data"
   },
   "process": {
     "eyebrow": "03 / HOW I BUILD",
