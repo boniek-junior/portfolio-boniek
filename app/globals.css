@@ -15,3 +15,10 @@ a,button{outline-offset:4px}
 .skip-link{position:fixed;left:1rem;top:-5rem;z-index:100;background:white;color:#080b12;padding:.8rem 1rem;border-radius:.5rem}
 .skip-link:focus{top:1rem}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Spatial depth, with a motion-safe fallback */
+.tilt-stage{isolation:isolate;transform-style:preserve-3d}
+.tilt-stage-inner{will-change:transform;backface-visibility:hidden}
+.tilt-stage-inner::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(125deg,transparent 35%,#a5b8ff0a 55%,transparent 75%);opacity:.7}
+@media(prefers-reduced-motion:reduce){.tilt-stage-inner{transform:none!important;transition:none!important}}
+@media(hover:none){.tilt-stage-inner{transform:none!important}}
