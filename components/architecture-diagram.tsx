@@ -21,7 +21,7 @@ const connections=[['human','spec'],['spec','builder'],['builder','reviewer'],['
 export function ArchitectureDiagram({labels}:{labels?:{engineer:string;orchestrator:string;agentA:string;agentB:string;note:string}}){
  const reduced=useReducedMotion();
  const [step,setStep]=useState(0);
- const [playing,setPlaying]=useState(false);
+ const [playing,setPlaying]=useState(true);
  const [visible,setVisible]=useState(false);
  useEffect(()=>{
   const element=document.getElementById('maestri-architecture');
@@ -67,6 +67,6 @@ export function ArchitectureDiagram({labels}:{labels?:{engineer:string;orchestra
     <div className="flex-1 rounded-xl border border-white/10 bg-[#070c09] p-3 font-mono"><div className="flex items-center gap-1.5 border-b border-white/10 pb-2"><span className="size-1.5 rounded-full bg-[#f87171]/70"/><span className="size-1.5 rounded-full bg-[#facc15]/70"/><span className="size-1.5 rounded-full bg-[#85e9b5]/70"/><span className="ml-2 text-[9px] text-white/40">terminal / demo</span></div><AnimatePresence mode="wait"><motion.div key={step} initial={reduced?false:{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}><p className="mt-4 break-words text-[10px] leading-5 text-[#85e9b5]">{current.command}</p><p className="mt-3 text-[10px] text-white/45">✓ {current.status}</p></motion.div></AnimatePresence></div>
    </div>
   </div>
-  <div className="relative border-t border-white/10 px-4 py-4 sm:px-6"><div className="grid grid-cols-4 gap-2">{stages.map((stage,i)=><button type="button" key={stage.title} onClick={()=>{setPlaying(false);setStep(i);}} aria-current={step===i?'step':undefined} className="group text-left focus-visible:outline-2 focus-visible:outline-[#85e9b5]"><span className={`mb-2 block h-1 rounded-full transition-colors ${step===i?'bg-[#85e9b5]':i<step?'bg-[#3ecf8e]/50':'bg-white/10'}`}/><span className={`text-[9px] sm:text-[11px] ${step===i?'text-[#85e9b5]':'text-white/40'}`}>{stage.title}</span></button>)}</div><p className="mt-4 flex items-center gap-1.5 text-[10px] leading-5 text-white/40"><MousePointer2 size={12}/> Clique nas etapas ou use Reproduzir para acompanhar o fluxo.</p><p className="mt-1 text-[10px] leading-5 text-white/35">{labels?.note||'Simulação conceitual inspirada no Maestri; não representa um ambiente real ou arquitetura interna.'}</p></div>
+  <div className="relative border-t border-white/10 px-4 py-4 sm:px-6"><div className="grid grid-cols-4 gap-2">{stages.map((stage,i)=><button type="button" key={stage.title} onClick={()=>{setPlaying(false);setStep(i);}} aria-current={step===i?'step':undefined} className="group text-left focus-visible:outline-2 focus-visible:outline-[#85e9b5]"><span className={`mb-2 block h-1 rounded-full transition-colors ${step===i?'bg-[#85e9b5]':i<step?'bg-[#3ecf8e]/50':'bg-white/10'}`}/><span className={`text-[9px] sm:text-[11px] ${step===i?'text-[#85e9b5]':'text-white/40'}`}>{stage.title}</span></button>)}</div><p className="mt-4 flex items-center gap-1.5 text-[10px] leading-5 text-white/40"><MousePointer2 size={12}/> Fluxo demonstrativo em execução automática. Clique nas etapas para explorar.</p><p className="mt-1 text-[10px] leading-5 text-white/35">{labels?.note||'Simulação conceitual inspirada no Maestri; não representa um ambiente real ou arquitetura interna.'}</p></div>
  </div>;
 }
