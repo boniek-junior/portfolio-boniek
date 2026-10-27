@@ -2,7 +2,7 @@
 
 import {useEffect,useRef,useState} from 'react';
 
-type Props={items:string[];eyebrow:string};
+type Props={items:string[];eyebrow:string;title:string;explore:string;enter:string;end:string;journey:string;all:string};
 const descriptions:Record<string,string>={
  Java:'Backend / JVM',Python:'Automation / AI',JavaScript:'Web / Interaction',
  TypeScript:'Typed applications',React:'Interfaces / UI',SQL:'Data / Queries',
@@ -18,7 +18,7 @@ const glyphs:Record<string,string>={
  GitHub:'GH',Docker:'D',Tailwind:'TW','Microsoft Clarity':'MC',GA4:'G4','Zoho PageSense':'ZP'
 };
 
-export function TechnologyJourney({items,eyebrow}:Props){
+export function TechnologyJourney({items,eyebrow,title,explore,enter,end,journey,all}:Props){
  const root=useRef<HTMLElement>(null);
  const track=useRef<HTMLDivElement>(null);
  const [progress,setProgress]=useState(0);
@@ -51,13 +51,13 @@ export function TechnologyJourney({items,eyebrow}:Props){
   window.addEventListener('resize',onScroll);
   return ()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);cancelAnimationFrame(frame);};
  },[motionReduced,items]);
- return <section ref={root} aria-label={eyebrow} className="technology-journey relative border-y border-white/10 bg-[#080d1a]" style={{height:motionReduced?'auto':`calc(100vh + ${Math.max(items.length-2,1)*190}px)`}}>
+ return <section ref={root} aria-label={eyebrow} className="technology-journey relative border-y border-white/10 bg-[#080d1a]" style={{height:motionReduced?'auto':`calc(100vh + ${Math.max(items.length-2,1)*260}px)`}}>
   <div className={motionReduced?'relative overflow-hidden py-20':'sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden py-20'}>
    <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_65%_50%,#233e8b26,transparent_60%)]"/>
    <div className="relative mx-auto w-full max-w-7xl px-6 md:px-12">
     <div className="flex items-end justify-between gap-6">
      <div><p className="font-mono text-[10px] tracking-[.28em] text-[#a5b8ff]">{eyebrow} / TOOLKIT</p>
-      <h3 className="mt-4 max-w-3xl text-3xl font-semibold tracking-[-.06em] sm:text-5xl">Tools that shape the work<span className="text-[#a5b8ff]">.</span></h3></div>
+      <h3 className="mt-4 max-w-3xl text-3xl font-semibold tracking-[-.06em] sm:text-5xl">{title}<span className="text-[#a5b8ff]">.</span></h3></div>
      <span aria-live="off" className="hidden font-mono text-xs tabular-nums text-white/50 sm:block">{String(Math.min(items.length,Math.floor(progress*items.length)+1)).padStart(2,'0')} / {String(items.length).padStart(2,'0')}</span>
     </div>
     <div className="mt-8 h-[2px] w-full overflow-hidden rounded-full bg-white/10"><div className="h-full origin-left bg-gradient-to-r from-[#567bff] to-[#a5b8ff]" style={{transform:`scaleX(${motionReduced?1:progress})`,transition:'transform 100ms linear'}}/></div>
@@ -72,7 +72,7 @@ export function TechnologyJourney({items,eyebrow}:Props){
      </article>)}
     </div>
    </div>
-   <div className="relative mx-auto mt-8 flex w-full max-w-7xl items-center justify-between px-6 font-mono text-[10px] tracking-[.18em] text-white/40 md:px-12"><span>{motionReduced?'EXPLORE THE STACK':active?'SCROLL TO EXPLORE →':'SCROLL DOWN TO ENTER'}</span><span>{motionReduced?'ALL TOOLS':progress>=.99?'END OF JOURNEY ↓':'HORIZONTAL JOURNEY'}</span></div>
+   <div className="relative mx-auto mt-8 flex w-full max-w-7xl items-center justify-between px-6 font-mono text-[10px] tracking-[.18em] text-white/40 md:px-12"><span>{motionReduced?all:active?explore:enter}</span><span>{motionReduced?all:progress>=.99?end:journey}</span></div>
   </div>
  </section>;
 }
