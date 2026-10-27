@@ -103,3 +103,25 @@ a,button{outline-offset:4px}
 @keyframes creation-float{0%{transform:translate3d(-8px,6px,0) scale(.6);opacity:.15}100%{transform:translate3d(12px,-11px,0) scale(1.25);opacity:.9}}
 @keyframes creation-blink{50%{opacity:.3}}
 @media(prefers-reduced-motion:reduce){.creation-stage *{animation:none!important}.creation-beam{transform:none;opacity:.2}}
+
+
+/* Signature v2: one geometric center shared by globe, orbital rings and tool paths. */
+.cosmos-v2-stage{isolation:isolate}
+.cosmos-v2-aura{background:radial-gradient(circle,rgba(62,207,142,.15) 0%,rgba(62,207,142,.035) 42%,transparent 72%);filter:blur(35px)}
+.cosmos-v2-orbit{border:1px solid rgba(133,233,181,.14);box-shadow:0 0 30px rgba(62,207,142,.025),inset 0 0 25px rgba(62,207,142,.025)}
+.cosmos-v2-orbit-inner{border-style:dashed;border-color:rgba(133,233,181,.16)}
+.cosmos-v2-orbit::before{content:'';position:absolute;inset:-1px;border-radius:50%;border-top:1px solid rgba(133,233,181,.62);border-left:1px solid transparent;animation:cosmos-v2-spin 34s linear infinite}
+.cosmos-v2-orbit-inner::before{animation-direction:reverse;animation-duration:48s}
+.cosmos-v2-sphere{border:1px solid rgba(133,233,181,.35);background:radial-gradient(circle at 33% 29%,#255943 0%,#102b20 34%,#06140e 67%,#030907 100%);box-shadow:0 0 45px rgba(62,207,142,.12),inset -28px -20px 45px #000b,inset 8px 8px 25px #85e9b512}
+.cosmos-v2-sphere-texture{background-image:radial-gradient(circle,rgba(180,255,211,.9) 1px,transparent 1.8px),repeating-linear-gradient(0deg,transparent 0 27px,rgba(133,233,181,.14) 28px,transparent 29px);background-size:11px 11px,100% 100%;background-position:0 0;mask-image:radial-gradient(ellipse at 42% 40%,#000 0%,rgba(0,0,0,.75) 46%,transparent 82%);animation:cosmos-v2-texture 30s linear infinite}
+.cosmos-v2-sphere-shading{background:radial-gradient(ellipse at 28% 24%,rgba(133,233,181,.25),transparent 45%),radial-gradient(ellipse at 80% 80%,#010603e8,transparent 66%);box-shadow:inset -22px -20px 32px #0009}
+.cosmos-v2-sphere-glint{border-radius:50%;border-left:1px solid rgba(133,233,181,.34);transform:rotate(-25deg)}
+.cosmos-v2-track{animation:cosmos-v2-spin 90s linear infinite;will-change:transform}
+.cosmos-v2-track-1{animation-duration:120s;animation-direction:reverse}
+.cosmos-v2-node{transform:translate(-50%,-50%)}
+.cosmos-v2-counter{animation:cosmos-v2-spin 90s linear infinite reverse}
+.cosmos-v2-track-1 .cosmos-v2-counter{animation-duration:120s;animation-direction:normal}
+.cosmos-v2-chip{box-shadow:0 8px 26px #000a,inset 0 1px 0 #ffffff16;backdrop-filter:blur(14px)}
+@keyframes cosmos-v2-spin{to{transform:rotate(360deg)}}
+@keyframes cosmos-v2-texture{to{background-position:132px 0,0 0}}
+@media(prefers-reduced-motion:reduce){.cosmos-v2-orbit::before,.cosmos-v2-track,.cosmos-v2-counter,.cosmos-v2-sphere-texture{animation:none!important}}
