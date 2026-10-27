@@ -92,3 +92,8 @@ a,button{outline-offset:4px}
 .signature-universe-satellite{animation:none}
 @keyframes signature-tools-revolve{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.signature-universe-orbit-layer,.signature-universe-chip{animation:none!important}}
+
+.signature-universe-orbit-layer-0 .signature-universe-chip,.signature-universe-orbit-layer-1 .signature-universe-chip{animation:none}
+.signature-universe-orbit-layer-0 .signature-universe-chip img{animation:signature-tools-revolve 85s linear infinite reverse}
+.signature-universe-orbit-layer-1 .signature-universe-chip img{animation:signature-tools-revolve 115s linear infinite}
+@media(prefers-reduced-motion:reduce){.signature-universe-chip img{animation:none!important}}
