@@ -1,2 +1,17 @@
 @import 'tailwindcss';
-:root{color-scheme:dark;--canvas:#080b12;--surface:#111d35;--accent:#2448e5;--glow:#a5b8ff;--text:#f4f5f8}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--canvas);color:var(--text);font-family:Arial,Helvetica,sans-serif}::selection{background:#2448e5;color:white}.noise{background-image:radial-gradient(#ffffff0a .5px,transparent .5px);background-size:6px 6px}.gridline{background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:80px 80px}.glass{background:#0c1322bb;backdrop-filter:blur(20px)}.outline-text{-webkit-text-stroke:1px #a5b8ff55;color:transparent}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+:root{color-scheme:dark;--canvas:#080b12;--surface:#111d35;--accent:#2448e5;--glow:#a5b8ff;--text:#f4f5f8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:6rem}
+body{margin:0;background:var(--canvas);color:var(--text);font-family:Inter,"Segoe UI Variable","Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Space Grotesk",Inter,"Segoe UI Variable",Arial,sans-serif;text-wrap:balance}
+p{text-wrap:pretty}
+a,button{outline-offset:4px}
+:focus-visible{outline:2px solid var(--glow);border-radius:4px}
+::selection{background:#2448e5;color:white}
+.noise{background-image:radial-gradient(#ffffff0a .5px,transparent .5px);background-size:6px 6px}
+.gridline{background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:80px 80px}
+.glass{background:#0c1322bb;backdrop-filter:blur(20px)}
+.outline-text{-webkit-text-stroke:1px #a5b8ff55;color:transparent}
+.skip-link{position:fixed;left:1rem;top:-5rem;z-index:100;background:white;color:#080b12;padding:.8rem 1rem;border-radius:.5rem}
+.skip-link:focus{top:1rem}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
