@@ -55,7 +55,7 @@ export function ParticleName(){
     const ty=dot.oy+swirl+Math.sin(angle)*force*70+Math.cos(angle)*force*16;
     dot.x+=(tx-dot.x)*(still?1:.12);dot.y+=(ty-dot.y)*(still?1:.12);
     const shimmer=still?0:.22*Math.sin(time*1.3+dot.phase+dot.ox*.04);
-    ctx!.fillStyle=`rgba(105,214,156,${Math.max(.26,Math.min(.92,.62+shimmer+force*.22))})`;
+    ctx!.fillStyle=`rgba(255,255,255,${Math.max(.26,Math.min(.92,.62+shimmer+force*.22))})`;
     ctx!.beginPath();ctx!.arc(dot.x,dot.y,dot.size*(1+force*.5),0,Math.PI*2);ctx!.fill();
    }
   }
