@@ -30,7 +30,28 @@
     "description": "Minha trajetória no desenvolvimento de software passou pela Estácio, onde estudei com bolsa ProUni, pela CESAR School e agora pela Just, empresa de tecnologia jurídica. Gosto de construir software útil e compreender os problemas por trás de cada solução.",
     "timeline1": "Estácio / ProUni",
     "timeline2": "CESAR School",
-    "timeline3": "Just / Estágio Fullstack"
+    "timeline3": "Just / Estágio Fullstack",
+    "careerLabel": "EXPERIÊNCIA PROFISSIONAL",
+    "career": [
+      {
+        "role": "Estagiário de Desenvolvimento Fullstack",
+        "company": "Just",
+        "period": "Setembro de 2026 — atual",
+        "description": "Desenvolvimento de software em uma empresa de tecnologia jurídica."
+      },
+      {
+        "role": "Instrutor de Programação (experiência anterior)",
+        "company": "Infinity School",
+        "period": "",
+        "description": "Experiência anterior com ensino de programação."
+      },
+      {
+        "role": "Experiência com sistemas e dados",
+        "company": "Império Móveis e Eletro",
+        "period": "",
+        "description": "Atuação com SQL, iReport, validação de dados e sistemas empresariais."
+      }
+    ]
   },
   "process": {
     "eyebrow": "03 / COMO EU CONSTRUO",
