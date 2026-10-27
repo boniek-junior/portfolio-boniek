@@ -83,5 +83,10 @@
     "github": "Ver GitHub",
     "email": "Entrar em contato",
     "footer": "Feito com curiosidade e intenção."
+  },
+  "signature": {
+    "title": "Criar é conectar universos.",
+    "description": "Software, inteligência artificial e design não são disciplinas isoladas. São ferramentas que se encontram para transformar ideias em experiências que fazem sentido — e funcionam.",
+    "hint": "INTERAJA COM OS NÓS DA ÓRBITA"
   }
 }
