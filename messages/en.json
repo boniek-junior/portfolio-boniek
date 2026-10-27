@@ -24,7 +24,8 @@
     "tag2": "INDEPENDENT PROJECT",
     "tag3": "IN DEVELOPMENT",
     "minddrop": "A collaborative arcade game built in C with Raylib, featuring boss battles, projectiles, power-ups and number-guessing challenges. My contributions included projectile firing and attribute drops.",
-    "tag4": "COLLABORATIVE PROJECT"
+    "tag4": "COLLABORATIVE PROJECT",
+    "viewLive": "View live app"
   },
   "about": {
     "eyebrow": "02 / ABOUT",
