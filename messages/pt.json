@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "work": "Projetos",
+    "about": "Sobre",
+    "process": "Processo",
+    "contact": "Contato"
+  },
+  "hero": {
+    "eyebrow": "ENGENHARIA DE SOFTWARE / IA / PRODUTO",
+    "title1": "Construindo software.",
+    "title2": "Potencializado por IA.",
+    "description": "Estagiário de Desenvolvimento Fullstack na Just. Explorando como engenharia, inteligência artificial e negócios se conectam para criar produtos úteis.",
+    "cta": "Explorar projetos",
+    "scroll": "ROLE PARA EXPLORAR"
+  },
+  "work": {
+    "eyebrow": "01 / PROJETOS SELECIONADOS",
+    "title": "O que venho construindo.",
+    "subtitle": "Uma seleção de trabalhos profissionais e projetos independentes.",
+    "analytics": "Aplicação que reúne métricas de presença digital do Microsoft Clarity, Google Analytics 4 e Zoho PageSense em um só lugar.",
+    "barber": "Sistema de agendamentos que permite aos clientes solicitar horários e ao barbeiro confirmar os pedidos.",
+    "academic": "Projeto acadêmico em desenvolvimento com Java e Spring Boot.",
+    "tag1": "PROJETO PROFISSIONAL",
+    "tag2": "PROJETO INDEPENDENTE",
+    "tag3": "EM DESENVOLVIMENTO"
+  },
+  "about": {
+    "eyebrow": "02 / SOBRE",
+    "title": "Da curiosidade à prática.",
+    "description": "Minha trajetória no desenvolvimento de software passou pela Estácio, onde estudei com bolsa ProUni, pela CESAR School e agora pela Just, empresa de tecnologia jurídica. Gosto de construir software útil e compreender os problemas por trás de cada solução.",
+    "timeline1": "Estácio / ProUni",
+    "timeline2": "CESAR School",
+    "timeline3": "Just / Estágio Fullstack"
+  },
+  "process": {
+    "eyebrow": "03 / COMO EU CONSTRUO",
+    "title": "Engenharia com IA no processo.",
+    "description": "Exploro fluxos de desenvolvimento assistidos por IA, incluindo a orquestração de agentes especializados para colaborar em tarefas de desenvolvimento. A ideia é combinar julgamento técnico com novas formas de construir.",
+    "node1": "Engenheiro",
+    "node2": "Orquestrador",
+    "node3": "Agente A",
+    "node4": "Agente B",
+    "note": "Ilustração conceitual da minha abordagem — não representa sistemas internos."
+  },
+  "experience": {
+    "eyebrow": "04 / EXPERIÊNCIA & STACK",
+    "title": "Ferramentas são meios. O impacto é o objetivo.",
+    "role": "Estagiário de Desenvolvimento Fullstack",
+    "company": "Just · Tecnologia jurídica",
+    "stack": "TECNOLOGIAS COM QUE TRABALHO"
+  },
+  "contact": {
+    "eyebrow": "05 / CONTATO",
+    "title": "Vamos construir algo relevante.",
+    "description": "Interesse em engenharia de software, IA e produtos que resolvem problemas reais.",
+    "github": "Ver GitHub",
+    "email": "Entrar em contato",
+    "footer": "Feito com curiosidade e intenção."
+  }
+}
