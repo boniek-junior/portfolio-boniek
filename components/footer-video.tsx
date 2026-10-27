@@ -78,7 +78,7 @@ export function FooterVideo(){
  return <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_65%,#103629_0%,#08140f_50%,#080b09_100%)]"/>
   <div className={`footer-ambient absolute inset-[-20%] opacity-70 ${!playing||reduced||failed?'footer-ambient-fallback':''}`}/>
-  {!reduced&&<video ref={videoRef} autoPlay loop muted playsInline preload="metadata" disablePictureInPicture className={`footer-video-tint absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${playing&&!failed?'opacity-55':'opacity-0'}`}/>}
+  <video ref={videoRef} autoPlay loop muted playsInline preload="metadata" disablePictureInPicture className={`footer-video-tint absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${playing&&!failed&&!reduced?'opacity-55':'opacity-0'}`}/>
   <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(8,11,9,.58),rgba(14,39,27,.16)_45%,rgba(8,11,9,.65))]"/>
  </div>;
 }
