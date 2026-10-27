@@ -24,6 +24,7 @@ export function TechnologyJourney({items,eyebrow,title,explore,enter,end,journey
  const [progress,setProgress]=useState(0);
  const [active,setActive]=useState(false);
  const [motionReduced,setMotionReduced]=useState(false);
+ const [travel,setTravel]=useState(0);
  useEffect(()=>{
   const media=window.matchMedia('(prefers-reduced-motion: reduce)');
   const updateMedia=()=>setMotionReduced(media.matches);
@@ -35,29 +36,37 @@ export function TechnologyJourney({items,eyebrow,title,explore,enter,end,journey
   const rail=track.current;
   if(!section||!rail||motionReduced)return;
   let frame=0;
+  const measure=()=>{
+   const width=Math.max(0,rail.scrollWidth-rail.clientWidth);
+   setTravel(previous=>Math.abs(previous-width)>1?width:previous);
+  };
   const update=()=>{
    frame=0;
    const rect=section.getBoundingClientRect();
    const distance=Math.max(0,section.offsetHeight-window.innerHeight);
-   const fraction=distance>0?Math.max(0,Math.min(1,-rect.top/distance)):0;
+   const fraction=distance>0?Math.max(0,Math.min(1,-rect.top/distance)):1;
    const maxShift=Math.max(0,rail.scrollWidth-rail.clientWidth);
    rail.style.transform=`translate3d(${-maxShift*fraction}px,0,0)`;
-   setProgress(old=>Math.abs(old-fraction)>.005?fraction:old);
-   setActive(rect.top<=window.innerHeight*.35&&rect.bottom>=window.innerHeight*.65);
+   setProgress(previous=>Math.abs(previous-fraction)>.002?fraction:previous);
+   setActive(rect.top<=0&&rect.bottom>=window.innerHeight);
   };
-  const onScroll=()=>{if(!frame)frame=requestAnimationFrame(update);};
+  const schedule=()=>{if(!frame)frame=requestAnimationFrame(update);};
+  const observer=new ResizeObserver(()=>{measure();schedule();});
+  observer.observe(rail);
+  observer.observe(section);
+  measure();
   update();
-  window.addEventListener('scroll',onScroll,{passive:true});
-  window.addEventListener('resize',onScroll);
-  return ()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);cancelAnimationFrame(frame);};
+  window.addEventListener('scroll',schedule,{passive:true});
+  window.addEventListener('resize',schedule);
+  return ()=>{window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);observer.disconnect();cancelAnimationFrame(frame);rail.style.transform='';};
  },[motionReduced,items]);
- return <section ref={root} aria-label={eyebrow} className="technology-journey relative border-y border-white/10 bg-[#0c0c0c]" style={{height:motionReduced?'auto':`calc(100vh + ${Math.max(items.length-2,1)*260}px)`}}>
-  <div className={motionReduced?'relative overflow-hidden py-20':'sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden py-20'}>
+ return <section ref={root} aria-label={eyebrow} className="technology-journey relative border-y border-white/10 bg-[#0c0c0c]" style={{height:motionReduced?'auto':`calc(100svh + ${travel}px)`}}>
+  <div className={motionReduced?'relative overflow-hidden py-20':'sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden py-10 sm:py-16'}>
    <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_65%_50%,#235e4226,transparent_60%)]"/>
    <div className="relative mx-auto w-full max-w-7xl px-6 md:px-12">
     <div className="flex items-center justify-center gap-6 text-center">
      <div><p className="font-mono text-[10px] tracking-[.28em] text-[#85e9b5]">{eyebrow} / TOOLKIT</p>
-      <h3 className="mt-4 max-w-3xl text-3xl font-semibold tracking-[-.06em] sm:text-5xl">{title}<span className="text-[#85e9b5]">.</span></h3></div>
+      <h3 className="mx-auto mt-4 max-w-3xl text-3xl font-semibold tracking-[-.06em] sm:text-5xl">{title}<span className="text-[#85e9b5]">.</span></h3></div>
      <span aria-live="off" className="absolute right-6 hidden font-mono text-xs tabular-nums text-white/50 sm:block md:right-12">{String(Math.min(items.length,Math.floor(progress*items.length)+1)).padStart(2,'0')} / {String(items.length).padStart(2,'0')}</span>
     </div>
     <div className="mt-8 h-[2px] w-full overflow-hidden rounded-full bg-white/10"><div className="h-full origin-left bg-gradient-to-r from-[#3ecf8e] to-[#85e9b5]" style={{transform:`scaleX(${motionReduced?1:progress})`,transition:'transform 100ms linear'}}/></div>
