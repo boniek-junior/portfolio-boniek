@@ -35,8 +35,9 @@ export function FooterVideo(){
   return ()=>{video.removeEventListener('error',onError);video.removeEventListener('canplay',play);player?.destroy();video.pause();video.removeAttribute('src');video.load();};
  },[]);
  return <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_65%,#18362b_0%,#080e0c_55%,#000_100%)]"/>
-  <div className="footer-ambient absolute inset-[-20%] opacity-40"/>
-  <video ref={videoRef} autoPlay loop muted playsInline preload="auto" className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${failed?'opacity-0':'opacity-75'}`}/>
+  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_65%,#103629_0%,#08140f_50%,#080b09_100%)]"/>
+  <div className="footer-ambient absolute inset-[-20%] opacity-70"/>
+  <video ref={videoRef} autoPlay loop muted playsInline preload="auto" className={`footer-video-tint absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${failed?'opacity-0':'opacity-55'}`}/>
+  <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(8,11,9,.58),rgba(14,39,27,.16)_45%,rgba(8,11,9,.65))]"/>
  </div>;
 }
