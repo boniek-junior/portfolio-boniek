@@ -46,17 +46,20 @@ export function OrbitSignature(){
    <div aria-hidden="true" className="signature-universe-ring signature-universe-ring-a absolute inset-[14%] rounded-full"/>
    <div aria-hidden="true" className="signature-universe-ring signature-universe-ring-b absolute inset-[5%] rounded-full"/>
    <div aria-hidden="true" className="signature-universe-ring signature-universe-ring-c absolute inset-[24%] rounded-full"/>
+   {[0,1].map(orbit=><div key={orbit} className={`signature-universe-orbit-layer signature-universe-orbit-layer-${orbit} pointer-events-none absolute inset-0`}>
    {tools.map((item,i)=>{
+    if(item.orbit!==orbit)return null;
     const angle=item.angle*Math.PI/180;
     const radius=item.orbit===0?35:45;
     const x=50+Math.cos(angle)*radius;
     const y=50+Math.sin(angle)*radius;
-    return <div key={item.name} className={`signature-universe-satellite signature-universe-satellite-${item.orbit} absolute z-20`} style={{left:`${x}%`,top:`${y}%`,animationDelay:`${-i*3.7}s`}}>
-     <button type="button" onClick={()=>setSelected(selected===i?null:i)} aria-pressed={selected===i} aria-label={`${item.name} — ${item.company}`} title={`${item.name} · ${item.company}`} className={`signature-universe-chip group flex size-11 items-center justify-center rounded-2xl border border-[#85e9b5]/30 bg-[#0b1711]/85 p-2 shadow-[0_8px_32px_#000a,inset_0_1px_#ffffff20] backdrop-blur-xl transition-all hover:scale-125 hover:border-[#85e9b5] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#85e9b5] sm:size-16 sm:p-3 ${selected===i?'border-[#85e9b5] shadow-[0_0_35px_#3ecf8e70]':''}`}>
+    return <div key={item.name} className={`signature-universe-satellite absolute z-20`} style={{left:`${x}%`,top:`${y}%`,animationDelay:`${-i*3.7}s`}}>
+     <button type="button" onClick={()=>setSelected(selected===i?null:i)} aria-pressed={selected===i} aria-label={`${item.name} — ${item.company}`} title={`${item.name} · ${item.company}`} className={`signature-universe-chip pointer-events-auto group flex size-11 items-center justify-center rounded-2xl border border-[#85e9b5]/30 bg-[#0b1711]/85 p-2 shadow-[0_8px_32px_#000a,inset_0_1px_#ffffff20] backdrop-blur-xl transition-all hover:scale-125 hover:border-[#85e9b5] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#85e9b5] sm:size-16 sm:p-3 ${selected===i?'border-[#85e9b5] shadow-[0_0_35px_#3ecf8e70]':''}`}>
       <img src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${item.logo}`} alt="" loading="lazy" width="48" height="48" className={`h-full w-full object-contain ${item.name==='Next.js'?'brightness-0 invert':''}`}/>
      </button>
     </div>;
    })}
+   </div>)}
    <div className="pointer-events-none absolute inset-x-0 bottom-[9%] z-10 text-center"><span className="font-mono text-[9px] tracking-[.35em] text-[#85e9b5]/75 sm:text-xs">THE UNIVERSE / 001</span></div>
   </div>
   <div aria-live="polite" className="relative z-30 mx-auto mt-2 min-h-12 text-center font-mono text-[10px] tracking-[.16em] text-white/60 sm:text-xs">{selected===null?'EXPLORE THE ORBIT · SELECT A TECHNOLOGY':`${tools[selected].name.toUpperCase()} / ${tools[selected].company.toUpperCase()}`}</div>
