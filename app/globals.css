@@ -31,3 +31,20 @@ a,button{outline-offset:4px}
 @keyframes orbit-spin{to{transform:rotate(360deg)}}
 @keyframes orbit-float{0%,100%{translate:0 0}50%{translate:0 -5px}}
 @media(prefers-reduced-motion:reduce){.orbit-ring,.orbit-ring-reverse,.orbit-node{animation:none!important}.orbit-scene{transform:none}}
+
+/* Signature 001: concentric orbital visualization */
+.signature-system{isolation:isolate;transform-style:preserve-3d}
+.signature-orbit{aspect-ratio:1;border:1px solid transparent;background:linear-gradient(#080c18,#080c18) padding-box,conic-gradient(from 10deg,transparent 0deg,#b49bff9c 72deg,transparent 155deg,#91b5ff91 244deg,transparent 325deg) border-box;box-shadow:0 0 32px #7c82ff0b,inset 0 0 30px #7c82ff09;transform:translate(-50%,-50%)}
+.signature-orbit-1{width:50%;animation:signature-spin-left 30s linear infinite}
+.signature-orbit-2{width:72%;animation:signature-spin-right 40s linear infinite}
+.signature-orbit-3{width:94%;animation:signature-spin-left 60s linear infinite}
+.signature-satellite{transform:translate(-50%,-50%);animation:signature-arrive .85s cubic-bezier(.22,1,.36,1) both}
+.signature-node{animation:signature-hover 6s ease-in-out infinite}
+.signature-satellite:nth-of-type(2n) .signature-node{animation-delay:-2.5s}
+.signature-aura{animation:signature-breathe 8s ease-in-out infinite}
+@keyframes signature-spin-left{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(-360deg)}}
+@keyframes signature-spin-right{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes signature-arrive{from{opacity:0;filter:blur(10px);transform:translate(-50%,-50%) scale(.35) rotate(-90deg)}to{opacity:1;filter:blur(0);transform:translate(-50%,-50%) scale(1) rotate(0)}}
+@keyframes signature-hover{0%,100%{translate:0 0}50%{translate:0 -7px}}
+@keyframes signature-breathe{0%,100%{opacity:.6;scale:.96}50%{opacity:1;scale:1.08}}
+@media(prefers-reduced-motion:reduce){.signature-orbit,.signature-satellite,.signature-node,.signature-aura{animation:none!important}}
