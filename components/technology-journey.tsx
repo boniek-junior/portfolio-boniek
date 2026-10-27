@@ -12,11 +12,31 @@ const descriptions:Record<string,string>={
  'Microsoft Clarity':'Behavior analytics',GA4:'Product analytics',
  'Zoho PageSense':'Experimentation'
 };
-const glyphs:Record<string,string>={
- Java:'J',Python:'Py',JavaScript:'JS',TypeScript:'TS',React:'⚛',SQL:'DB',
- FastAPI:'API','Spring Boot':'SB',Nextjs:'N',Supabase:'S',Git:'Git',
- GitHub:'GH',Docker:'D',Tailwind:'TW','Microsoft Clarity':'MC',GA4:'G4','Zoho PageSense':'ZP'
+const brands:Record<string,{logo:string;company:string}>={
+ Java:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg',company:'Oracle'},
+ Python:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg',company:'Python Software Foundation'},
+ JavaScript:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg',company:'ECMA International'},
+ TypeScript:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg',company:'Microsoft'},
+ React:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg',company:'Meta'},
+ SQL:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg',company:'Linguagem SQL · PostgreSQL'},
+ FastAPI:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg',company:'FastAPI · Open source'},
+ 'Spring Boot':{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg',company:'VMware Tanzu · Broadcom'},
+ Nextjs:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg',company:'Vercel'},
+ Supabase:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg',company:'Supabase'},
+ Git:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg',company:'Software Freedom Conservancy'},
+ GitHub:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg',company:'Microsoft · GitHub'},
+ Docker:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg',company:'Docker, Inc.'},
+ Tailwind:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',company:'Tailwind Labs'},
+ 'Microsoft Clarity':{logo:'https://cdn.simpleicons.org/microsoftclarity/FFFFFF',company:'Microsoft'},
+ GA4:{logo:'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googleanalytics/googleanalytics-original.svg',company:'Google'},
+ 'Zoho PageSense':{logo:'https://cdn.simpleicons.org/zoho/FFFFFF',company:'Zoho Corporation'}
 };
+function TechnologyLogo({item}: {item:string}){
+ const [failed,setFailed]=useState(false);
+ const brand=brands[item];
+ if(!brand||failed)return <span aria-hidden="true" className="font-mono text-2xl font-bold text-white">{item.slice(0,2).toUpperCase()}</span>;
+ return <img src={brand.logo} alt={`Logo de ${item}`} width={76} height={76} loading="lazy" decoding="async" onError={()=>setFailed(true)} className={`h-[76px] w-[76px] object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,.25)] ${item==='Nextjs'||item==='GitHub'?'brightness-0 invert':''}`}/>;
+}
 
 export function TechnologyJourney({items,eyebrow,title,explore,enter,end,journey,all}:Props){
  const root=useRef<HTMLElement>(null);
@@ -76,8 +96,8 @@ export function TechnologyJourney({items,eyebrow,title,explore,enter,end,journey
      {items.map((item,i)=><article key={item} className="technology-card group relative flex h-[300px] w-[250px] shrink-0 flex-col justify-between overflow-hidden rounded-[28px] border border-[#85e9b5]/15 bg-gradient-to-br from-[#202420] via-[#181b19] to-[#121212] p-7 transition-colors duration-300 hover:border-[#85e9b5]/65 sm:h-[350px] sm:w-[310px]">
       <div aria-hidden="true" className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[#3ecf8e]/10 blur-3xl transition group-hover:bg-[#3ecf8e]/25"/>
       <div className="relative flex items-center justify-between"><span className="font-mono text-xs tracking-[.2em] text-[#85e9b5]/60">{String(i+1).padStart(2,'0')}</span><span className="h-2 w-2 rounded-full bg-[#85e9b5] shadow-[0_0_16px_#85e9b5]"/></div>
-      <div className="relative flex h-28 items-center justify-center"><div className="flex h-24 w-24 items-center justify-center rounded-[26px] border border-[#85e9b5]/30 bg-[#25382e]/70 font-mono text-3xl font-bold tracking-[-.09em] text-[#e1f8e9] shadow-[0_16px_50px_#3ecf8e20] transition-transform duration-500 group-hover:-translate-y-2 group-hover:rotate-[-8deg]">{glyphs[item]||item.slice(0,2).toUpperCase()}</div></div>
-      <div className="relative"><h4 className="text-2xl font-semibold tracking-[-.05em] text-white">{item}</h4><p className="mt-2 text-xs text-white/45">{descriptions[item]||'Development / Technology'}</p></div>
+      <div className="relative flex h-28 items-center justify-center"><div className="flex h-24 w-24 items-center justify-center rounded-[26px] border border-[#85e9b5]/30 bg-[#25382e]/70 text-[#e1f8e9] shadow-[0_16px_50px_#3ecf8e20] transition-transform duration-500 group-hover:-translate-y-2 group-hover:rotate-[-8deg]"><TechnologyLogo item={item}/></div></div>
+      <div className="relative"><h4 className="text-2xl font-semibold tracking-[-.05em] text-white">{item}</h4><p className="mt-2 text-xs text-white/55">{descriptions[item]||'Development / Technology'}</p><p className="mt-2 truncate text-[11px] font-medium text-[#85e9b5]/80" title={brands[item]?.company}>{brands[item]?.company||'Open source'}</p></div>
      </article>)}
     </div>
    </div>
