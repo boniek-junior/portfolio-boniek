@@ -22,7 +22,9 @@
     "academic": "Projeto acadêmico em desenvolvimento com Java e Spring Boot.",
     "tag1": "PROJETO PROFISSIONAL",
     "tag2": "PROJETO INDEPENDENTE",
-    "tag3": "EM DESENVOLVIMENTO"
+    "tag3": "EM DESENVOLVIMENTO",
+    "minddrop": "Jogo arcade colaborativo desenvolvido em C com Raylib, inspirado em Space Invaders. Combina chefes, projéteis, power-ups e desafios de adivinhação. Contribuí com disparos de projéteis e drops de atributos.",
+    "tag4": "PROJETO COLABORATIVO"
   },
   "about": {
     "eyebrow": "02 / SOBRE",
@@ -31,7 +33,7 @@
     "timeline1": "Estácio / ProUni",
     "timeline2": "CESAR School",
     "timeline3": "Just / Estágio Fullstack",
-    "careerLabel": "EXPERIÊNCIA PROFISSIONAL",
+    "careerLabel": "EXPERIÊNCIAS ANTERIORES",
     "career": [
       {
         "role": "Estagiário de Desenvolvimento Fullstack",
@@ -51,7 +53,9 @@
         "period": "",
         "description": "Atuação com SQL, iReport, validação de dados e sistemas empresariais."
       }
-    ]
+    ],
+    "formerInstructor": "Instrutor de Programação (anteriormente)",
+    "businessSystems": "Sistemas empresariais e dados"
   },
   "process": {
     "eyebrow": "03 / COMO EU CONSTRUO",
