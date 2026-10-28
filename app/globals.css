@@ -63,7 +63,7 @@ a,button{outline-offset:4px}
 @media(prefers-reduced-motion:reduce){.footer-ambient{animation:none}}
 
 /* Footer identity: Supabase emerald over graphite, preserving the cinematic motion. */
-.footer-video-tint{filter:grayscale(1) sepia(.42) hue-rotate(87deg) saturate(1.5) brightness(.75) contrast(1.12)}
+.footer-video-tint{filter:none}
 .footer-glass-green{background:rgba(8,30,20,.34)!important;box-shadow:0 10px 35px rgba(0,0,0,.22),inset 0 1px 1px rgba(133,233,181,.17)!important}
 .footer-glass-green::before{background:linear-gradient(180deg,rgba(133,233,181,.65),rgba(62,207,142,.2) 25%,transparent 45%,transparent 55%,rgba(62,207,142,.22) 80%,rgba(133,233,181,.6))!important}
 
