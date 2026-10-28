@@ -19,7 +19,7 @@ export function FooterVideo(){
   let hls:Hls|undefined;
   let disposed=false;
   let inView=false;
-  let retryTimer:number|undefined;
+  
 
   const play=()=>{
    if(disposed||document.hidden||!inView)return;
@@ -64,13 +64,13 @@ export function FooterVideo(){
    setFailed(true);
   }
 
-  retryTimer=window.setInterval(()=>{
+  const retryTimer=window.setInterval(()=>{
    if(inView&&video.paused&&!document.hidden)play();
   },4000);
 
   return ()=>{
    disposed=true;
-   if(retryTimer!==undefined)window.clearInterval(retryTimer);
+   window.clearInterval(retryTimer);
    observer.disconnect();
    document.removeEventListener('visibilitychange',onVisibility);
    video.removeEventListener('canplay',play);
