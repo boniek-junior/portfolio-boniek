@@ -53,6 +53,6 @@ export function FooterVideo(){
   playsInline
   preload="auto"
   aria-hidden="true"
-  className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
+  className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover [filter:grayscale(1)_sepia(.65)_hue-rotate(85deg)_saturate(2)_brightness(.85)_contrast(1.12)]"
  />;
 }
