@@ -85,8 +85,13 @@
     "footer": "Built with curiosity and intention."
   },
   "signature": {
-    "title": "Ideas take shape in motion.",
-    "description": "An idea is never born complete. It flows, meets new perspectives, and changes direction until it becomes something real. That is how I bring software development, artificial intelligence, and design together: not as separate pieces, but as forces that blend to create purposeful solutions.",
-    "hint": "DIFFERENT FLOWS. ONE SHARED DIRECTION."
+    "title": "Building means giving every layer purpose.",
+    "description": "Trusted data forms the foundation. Artificial intelligence expands what is possible. Software development turns it into real experiences. My work connects these layers with clarity, care, and purpose — so every solution is stronger than the sum of its parts.",
+    "hint": "DATA · INTELLIGENCE · ENGINEERING",
+    "data": "FOUNDATION",
+    "dataTitle": "Data, context, and well-grounded decisions.",
+    "systems": "ENGINEERING",
+    "systemsTitle": "Intelligence and software working together.",
+    "caption": "LAYERS IN MOTION"
   }
 }
