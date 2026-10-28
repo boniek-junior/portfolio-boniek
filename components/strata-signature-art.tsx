@@ -23,8 +23,8 @@ export function StrataSignatureArt({labels}:{labels:{data:string;dataTitle:strin
  return <div className="relative isolate mx-auto w-full max-w-[680px] min-w-0 overflow-visible py-14 sm:py-20 lg:py-24">
   <div aria-hidden="true" className="pointer-events-none absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgba(62,207,142,.18),transparent_67%)] blur-3xl"/>
   <div className="relative mx-auto aspect-square w-full overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_38%,transparent_73%)]">
-   <img src={POSTER} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-contain"/>
-   <video ref={videoRef} autoPlay muted loop playsInline preload="metadata" poster={POSTER} aria-label={labels.caption} className="absolute inset-0 h-full w-full object-contain [filter:hue-rotate(55deg)_saturate(1.18)]">
+   <img src={POSTER} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-contain [filter:grayscale(1)_brightness(1.3)_contrast(1.12)]"/>
+   <video ref={videoRef} autoPlay muted loop playsInline preload="metadata" poster={POSTER} aria-label={labels.caption} className="absolute inset-0 h-full w-full object-contain [filter:grayscale(1)_sepia(1)_hue-rotate(82deg)_saturate(2.2)_brightness(1.24)_contrast(1.12)]">
     <source src={VIDEO} type="video/mp4"/>
    </video>
   </div>
