@@ -74,12 +74,11 @@ export function OrbitSignature(){
  const reduced=useReducedMotion();
  const [selected,setSelected]=useState<number|null>(null);
  const [paused,setPaused]=useState(false);
- const [hovered,setHovered]=useState(false);
  const [time,setTime]=useState(0);
  const stage=useRef<HTMLDivElement>(null);
- const state=useRef({paused:false,hovered:false,reduced:false,visible:false});
+ const state=useRef({paused:false,reduced:false,visible:false});
  const last=useRef(0);
- useEffect(()=>{state.current.paused=paused;state.current.hovered=hovered;state.current.reduced=!!reduced;},[paused,hovered,reduced]);
+ useEffect(()=>{state.current.paused=paused;state.current.reduced=!!reduced;},[paused,reduced]);
  useEffect(()=>{
   const el=stage.current;if(!el)return;
   const observer=new IntersectionObserver(([entry])=>{state.current.visible=entry.isIntersecting;},{threshold:.05});
@@ -87,7 +86,7 @@ export function OrbitSignature(){
   let raf=0;
   const tick=(now:number)=>{
    const dt=last.current?Math.min(50,now-last.current):0;last.current=now;
-   if(state.current.visible&&!state.current.paused&&!state.current.hovered&&!state.current.reduced)setTime(t=>t+dt*.00022);
+   if(state.current.visible&&!state.current.paused&&!state.current.reduced)setTime(t=>t+dt*.00022);
    raf=requestAnimationFrame(tick);
   };
   raf=requestAnimationFrame(tick);
@@ -95,19 +94,19 @@ export function OrbitSignature(){
  },[]);
  return <div className="relative mx-auto w-full max-w-[670px]">
   <div className="mb-2 flex items-center justify-between gap-3 font-mono text-[9px] tracking-[.18em] text-[#85e9b5]/60 sm:text-[10px]"><span>TECHNOLOGY UNIVERSE</span><span className="flex items-center gap-2"><span className="size-1.5 animate-pulse rounded-full bg-[#85e9b5]"/> INTERACTIVE / 3D</span></div>
-  <div ref={stage} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} className="relative mx-auto aspect-square w-full overflow-hidden rounded-[28px] border border-[#3ecf8e]/10 bg-[radial-gradient(ellipse_at_50%_50%,#102419_0%,#08110c_43%,#080b09_78%)]" role="group" aria-label="Universo interativo de tecnologias com globo de partículas e órbita tridimensional">
+  <div ref={stage} className="relative mx-auto aspect-square w-full overflow-hidden rounded-[28px] border border-[#3ecf8e]/10 bg-[radial-gradient(ellipse_at_50%_50%,#102419_0%,#08110c_43%,#080b09_78%)]" role="group" aria-label="Universo interativo de tecnologias com globo de partículas e órbita tridimensional">
    <div className="pointer-events-none absolute inset-0 opacity-25" style={{backgroundImage:'radial-gradient(#85e9b5 0.7px,transparent 0.7px)',backgroundSize:'23px 23px',maskImage:'radial-gradient(circle,transparent 24%,black 90%)'}}/>
    <div className="pointer-events-none absolute inset-[19%] rounded-full border border-[#85e9b5]/10 shadow-[0_0_65px_#3ecf8e12]"/>
    <div className="pointer-events-none absolute inset-[26%] rounded-full bg-[#3ecf8e]/5 blur-[35px]"/>
-   <ParticleGlobe paused={paused||hovered}/>
-   <div className="pointer-events-none absolute left-1/2 top-1/2 h-[29%] w-[78%] -translate-x-1/2 -translate-y-1/2 rotate-[17deg] rounded-[50%] border border-[#85e9b5]/15"/>
+   <ParticleGlobe paused={paused}/>
+   <div className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#85e9b5]/20"/>
    {tech.map((tool,i)=>{
     const angle=time+i*Math.PI*2/tech.length;
     const z=Math.sin(angle);
     const depth=(z+1)/2;
-    const x=50+Math.cos(angle)*37;
-    const y=50+Math.sin(angle)*16;
-    const scale=.68+depth*.44;
+    const x=50+Math.cos(angle)*35;
+    const y=50+Math.sin(angle)*35;
+    const scale=.82+depth*.25;
     return <button key={tool.name} type="button" onClick={()=>{setSelected(i);setPaused(true);}} aria-pressed={selected===i} aria-label={`Explorar ${tool.name}`} className={`absolute flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl border bg-[#14231a]/90 p-2 shadow-[0_10px_25px_#0009] backdrop-blur-md transition-[border-color,box-shadow] duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#85e9b5] sm:size-[58px] sm:rounded-2xl sm:p-3 ${selected===i?'border-[#85e9b5] shadow-[0_0_30px_#3ecf8e60]':'border-[#85e9b5]/30 hover:border-[#85e9b5] hover:shadow-[0_0_25px_#3ecf8e40]'}`} style={{left:`${x}%`,top:`${y}%`,opacity:.5+depth*.5,zIndex:Math.round(depth*20)+1,transform:`translate(-50%,-50%) scale(${scale})`,filter:z<-.4?'blur(.35px)':undefined}}>
      <img src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${tool.icon}`} width={36} height={36} loading="lazy" alt="" className={`h-full w-full object-contain ${tool.name==='Next.js'?'brightness-0 invert':''}`}/>
      {selected===i&&<span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[#85e9b5]/25 bg-[#0b150f] px-2 py-1 text-[10px] text-[#baf8d7]">{tool.name}</span>}
