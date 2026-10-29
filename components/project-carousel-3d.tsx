@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect,useRef,useState} from 'react';
-import {ArrowLeft,ArrowRight,ArrowUpRight,X,ChevronLeft,ChevronRight} from 'lucide-react';
+import {ArrowUpRight,X,ChevronLeft,ChevronRight} from 'lucide-react';
 import {AutoplayVideo} from '@/components/autoplay-video';
 
 type Project={name:string;category:string;description:string;stack:string[];image?:string;video?:string;links:{label:string;href:string}[]};
@@ -60,4 +60,3 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel}:
     </div>}
   </div>;
 }
-function minSpacing(){return typeof window==='undefined'?290:Math.min(window.innerWidth*.43,340);}
