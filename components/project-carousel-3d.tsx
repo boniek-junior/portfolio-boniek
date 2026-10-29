@@ -1,75 +1,123 @@
 'use client';
+
 import * as React from 'react';
-import {ArrowUpRight,X,ChevronUp,ChevronDown} from 'lucide-react';
+import {ArrowUpRight, X} from 'lucide-react';
 import {AutoplayVideo} from '@/components/autoplay-video';
 
-type Project={name:string;category:string;description:string;stack:string[];image?:string;video?:string;links:{label:string;href:string}[]};
-type Props={projects:Project[];viewDetails:string;closeLabel:string;selectLabel:string};
-const clamp=(v:number,lo:number,hi:number)=>Math.min(hi,Math.max(lo,v));
-const rad=(v:number)=>v*Math.PI/180;
-const CARD_H=.38,CARD_MAX_W=.34,CARD_RATIO=1.45,STEP=40,DRUM=2.22,LENS=2.7,RING_R=1.14,BOW=1.82,CULL=1.6,EASE=.12;
+type Project = {name:string;category:string;description:string;stack:string[];image?:string;video?:string;links:{label:string;href:string}[]};
+type Props = {projects:Project[];viewDetails:string;closeLabel:string;selectLabel:string;heading:string;subtitle:string;locale:string};
+const clamp=(n:number,a:number,b:number)=>Math.max(a,Math.min(b,n));
+const smooth=(a:number,b:number,t:number)=>a+(b-a)*t;
+const wrap=(n:number,size:number)=>((n%size)+size)%size;
 
-export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel}:Props){
- const stageRef=React.useRef<HTMLDivElement>(null);
- const wheelRef=React.useRef<HTMLDivElement>(null);
- const cardRefs=React.useRef<(HTMLButtonElement|null)[]>([]);
- const ringLabelRef=React.useRef<HTMLDivElement>(null);
- const drumTitleRef=React.useRef<HTMLDivElement>(null);
- const turn=React.useRef(0),target=React.useRef(0),drag=React.useRef<number|null>(null),settling=React.useRef<ReturnType<typeof setTimeout>|null>(null);
- const [stage,setStage]=React.useState({w:0,h:0});
- const [active,setActive]=React.useState(0);
- const [expanded,setExpanded]=React.useState(false);
- const [started,setStarted]=React.useState(false);
+export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,heading,subtitle,locale}:Props){
+ const outer=React.useRef<HTMLElement>(null);
+ const progress=React.useRef(0);
+ const desired=React.useRef(0);
+ const [current,setCurrent]=React.useState(0);
+ const [opened,setOpened]=React.useState<number|null>(null);
  const [reduced,setReduced]=React.useState(false);
- const count=projects.length,last=Math.max(count-1,0);
- React.useEffect(()=>{const q=window.matchMedia('(prefers-reduced-motion: reduce)');const read=()=>setReduced(q.matches);read();q.addEventListener('change',read);return()=>q.removeEventListener('change',read);},[]);
- React.useEffect(()=>{const el=stageRef.current;if(!el)return;const read=()=>setStage({w:el.clientWidth,h:el.clientHeight});read();const ro=new ResizeObserver(read);ro.observe(el);return()=>ro.disconnect();},[]);
- const metrics=React.useMemo(()=>{const cardW=Math.min(stage.h*CARD_H*CARD_RATIO,stage.w*CARD_MAX_W);const cardH=cardW/CARD_RATIO;const ringR=cardH*RING_R;return{cardW,cardH,ringR,ringScale:count?clamp((2*Math.PI*ringR/count*.82)/(cardW||1),.16,1):1,drumR:cardH*DRUM,bow:cardH*BOW,depth:cardH*LENS};},[stage,count]);
- const to=React.useCallback((next:number)=>{target.current=clamp(next,0,last+1);setStarted(target.current>=.5);},[last]);
- const settle=React.useCallback(()=>{if(settling.current)clearTimeout(settling.current);settling.current=setTimeout(()=>to(Math.round(target.current)),140);},[to]);
- React.useEffect(()=>{if(!stage.h||!count)return;let frame=0;const draw=()=>{frame=requestAnimationFrame(draw);const gap=target.current-turn.current;turn.current=Math.abs(gap)<.0005?target.current:turn.current+gap*(reduced?1:EASE);
- const t=turn.current,m=clamp(t,0,1),pos=Math.max(0,t-1);
- if(wheelRef.current)wheelRef.current.style.transform=`translateZ(${-m*metrics.drumR}px)`;
- cardRefs.current.forEach((card,i)=>{if(!card)return;const d=i-pos,drumDeg=d*STEP,ringDeg=d*(360/count),bowX=-metrics.bow*(1-Math.cos(rad(drumDeg)));card.style.transform=`translateX(${m*bowX}px) rotateZ(${(1-m)*ringDeg}deg) translateY(${-(1-m)*metrics.ringR}px) rotateX(${m*drumDeg}deg) translateZ(${m*metrics.drumR}px)`;card.style.opacity=m>.5&&Math.abs(d)>CULL?'0':'1';card.style.zIndex=String(Math.round(100-Math.abs(d)*2));card.style.pointerEvents=m>.5&&Math.abs(d)>CULL?'none':'auto';const face=card.firstElementChild as HTMLElement|null;if(face)face.style.transform=`scale(${metrics.ringScale+(1-metrics.ringScale)*m})`;});
- if(ringLabelRef.current)ringLabelRef.current.style.opacity=String(1-m);
- if(drumTitleRef.current)drumTitleRef.current.style.opacity=String(m);
- const near=clamp(Math.round(pos),0,last);setActive(prev=>prev===near?prev:near);
- };frame=requestAnimationFrame(draw);return()=>cancelAnimationFrame(frame);},[metrics,stage.h,count,last,reduced]);
- React.useEffect(()=>{const el=stageRef.current;if(!el)return;const onWheel=(e:WheelEvent)=>{if(expanded)return;const next=target.current+e.deltaY/900;if(next>0&&next<last+1){e.preventDefault();to(next);settle();}};el.addEventListener('wheel',onWheel,{passive:false});return()=>el.removeEventListener('wheel',onWheel);},[to,settle,last,expanded]);
- React.useEffect(()=>{const key=(e:KeyboardEvent)=>{if(e.key==='Escape')setExpanded(false);};window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key);},[]);
- React.useEffect(()=>()=>{if(settling.current)clearTimeout(settling.current);},[]);
- return <div className="relative mx-auto mt-10 w-full max-w-6xl">
- <div ref={stageRef} tabIndex={0} aria-label={selectLabel} className="relative h-[440px] w-full touch-pan-x select-none overflow-hidden rounded-3xl bg-[radial-gradient(ellipse_at_50%_50%,#173c2b35,transparent_65%)] outline-none focus-visible:outline-2 focus-visible:outline-[#85e9b5] sm:h-[580px] md:h-[660px]" style={{perspective:metrics.depth||800}}
- onPointerDown={e=>{if(e.pointerType==='mouse'&&e.button!==0)return;drag.current=e.clientY;e.currentTarget.setPointerCapture(e.pointerId);}}
- onPointerMove={e=>{if(drag.current===null)return;const delta=drag.current-e.clientY;if(Math.abs(delta)>2){to(target.current+delta/420);drag.current=e.clientY;}}}
- onPointerUp={()=>{drag.current=null;if(target.current>0)to(Math.max(1,Math.round(target.current)));}}
- onPointerCancel={()=>{drag.current=null;settle();}}
- onKeyDown={e=>{if(e.key==='ArrowDown'||e.key==='ArrowRight'){to(Math.round(target.current)+1);e.preventDefault();}else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){to(Math.round(target.current)-1);e.preventDefault();}else if(e.key==='Enter'){if(target.current<.5)to(1);else setExpanded(true);e.preventDefault();}}}>
- <div aria-hidden className="pointer-events-none absolute inset-x-[20%] bottom-[15%] h-16 rounded-full bg-[#3ecf8e]/15 blur-3xl"/>
- <div ref={wheelRef} className="absolute left-1/2 top-1/2 [transform-style:preserve-3d]">
- {projects.map((p,i)=><button key={p.name} ref={node=>{cardRefs.current[i]=node;}} type="button" aria-label={selectLabel+' '+p.name} onClick={()=>{if(target.current<.5){to(i+1);return;}if(active===i){setExpanded(true);}else to(i+1);}} className="group absolute cursor-pointer [backface-visibility:hidden] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#85e9b5]" style={{width:metrics.cardW,height:metrics.cardH,marginLeft:-metrics.cardW/2,marginTop:-metrics.cardH/2}}>
- <span className="relative block h-full w-full overflow-hidden rounded-xl border border-[#85e9b5]/25 bg-[#111a15] shadow-[0_18px_45px_#000a] transition-[border-color,transform] duration-200 group-hover:border-[#85e9b5]/80">
- {p.image?<img src={p.image} alt={p.name} draggable={false} onError={e=>{e.currentTarget.style.opacity="0";}} className="h-full w-full object-contain"/>:p.video?<video src={p.video} autoPlay muted loop playsInline preload="metadata" className="h-full w-full object-cover" aria-hidden="true"/>:<div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_center,#27694c,transparent_70%)]"><span className="font-mono text-4xl font-bold tracking-tight text-[#85e9b5]">JUST / ANALYTICS</span></div>}
- <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent px-4 pb-3 pt-12 text-left text-[clamp(10px,1.6vw,17px)] font-semibold text-white">{p.name}</span>
- </span></button>)}
- </div>
- <div ref={ringLabelRef} className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 text-center"><span className="font-mono text-[10px] tracking-[.35em] text-[#85e9b5]">SELECTED WORK</span><span className="text-[clamp(26px,5vw,60px)] font-semibold tracking-[-.07em] text-white">Works / 26</span><span className="mt-3 font-mono text-[10px] tracking-[.15em] text-white/50">↓ SCROLL TO EXPLORE</span></div>
- <div ref={drumTitleRef} className="pointer-events-none absolute bottom-[4%] left-[4%] z-10 w-[min(58%,360px)] rounded-2xl border border-[#85e9b5]/20 bg-[#08120ee8] p-4 text-left opacity-0 shadow-[0_20px_55px_#0009] backdrop-blur-xl sm:bottom-auto sm:top-1/2 sm:w-[min(30%,310px)] sm:-translate-y-1/2 sm:p-6">
- <span className="font-mono text-[10px] tracking-[.2em] text-[#85e9b5]">{String(active+1).padStart(2,'0')} / {String(count).padStart(2,'0')} · {projects[active]?.category}</span>
- <h3 className="mt-3 text-xl font-semibold tracking-[-.05em] text-white sm:text-3xl">{projects[active]?.name}</h3>
- <p className="mt-3 line-clamp-3 text-xs leading-5 text-white/65 sm:line-clamp-5 sm:text-sm sm:leading-6">{projects[active]?.description}</p>
- <div className="mt-4 hidden flex-wrap gap-1.5 sm:flex">{projects[active]?.stack.map(tech=><span key={tech} className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[10px] text-white/65">{tech}</span>)}</div>
- <span className="mt-4 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[.12em] text-[#85e9b5]">{viewDetails}<ArrowUpRight size={13}/></span>
- </div>
- <ol className="absolute right-[3%] top-[8%] z-10 space-y-2 text-right">{projects.map((p,i)=><li key={p.name}><button type="button" onClick={()=>to(i+1)} className={'font-mono text-[10px] transition-colors sm:text-xs '+(active===i&&started?'text-[#85e9b5]':'text-white/40 hover:text-white')}>{String(i+1).padStart(2,'0')} / {p.name}</button></li>)}</ol>
- </div>
- <div className="mt-4 flex items-center justify-center gap-5"><button type="button" aria-label="Previous project" onClick={()=>to(Math.max(1,Math.round(target.current)-1))} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-white hover:border-[#85e9b5]"><ChevronUp size={20}/></button><button type="button" onClick={()=>{if(target.current<.5)to(1);else setExpanded(true);}} className="rounded-full border border-[#85e9b5]/50 bg-[#85e9b5]/10 px-6 py-3 text-xs font-semibold tracking-[.1em] text-[#85e9b5] hover:bg-[#85e9b5]/20">{started?viewDetails:selectLabel}</button><button type="button" aria-label="Next project" onClick={()=>to(Math.min(last+1,Math.max(1,Math.round(target.current)+1)))} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-white hover:border-[#85e9b5]"><ChevronDown size={20}/></button></div>
-     {expanded&&<div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur-xl sm:p-8" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setExpanded(false);}}>
-      <section role="dialog" aria-modal="true" aria-label={projects[active].name} className="relative max-h-[90dvh] w-full max-w-4xl overflow-y-auto rounded-3xl border border-[#85e9b5]/30 bg-[#111915] text-left shadow-[0_30px_120px_#000]">
-        <button type="button" onClick={()=>setExpanded(false)} aria-label={closeLabel} className="absolute right-5 top-5 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white hover:text-[#85e9b5]"><X size={20}/></button>
-        <div className="relative h-52 overflow-hidden bg-[#08110b] sm:h-80">{projects[active].image?<img src={projects[active].image} alt="" onError={e=>{e.currentTarget.style.opacity="0";}} className="h-full w-full object-contain"/>:projects[active].video?<AutoplayVideo src={projects[active].video!} className="h-full w-full object-cover" ariaLabel={projects[active].name}/>:<div className="h-full bg-[radial-gradient(circle_at_center,#3ecf8e45,transparent_65%)]"/>}<div className="absolute inset-0 bg-gradient-to-t from-[#111915] to-transparent"/></div>
-        <div className="relative -mt-8 px-6 pb-9 sm:px-10"><span className="font-mono text-xs tracking-[.2em] text-[#85e9b5]">{projects[active].category}</span><h3 className="mt-3 text-4xl font-semibold tracking-[-.06em] sm:text-6xl">{projects[active].name}</h3><p className="mt-5 max-w-2xl text-base leading-8 text-white/65">{projects[active].description}</p><div className="mt-7 flex flex-wrap gap-2">{projects[active].stack.map(item=><span key={item} className="rounded-full border border-white/15 px-4 py-2 text-xs text-white/75">{item}</span>)}</div><div className="mt-8 flex flex-wrap gap-4">{projects[active].links.map(link=><a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-[#85e9b5]/40 px-5 py-3 text-sm text-[#85e9b5] transition hover:bg-[#85e9b5] hover:text-[#08110b]">{link.label}<ArrowUpRight size={16}/></a>)}</div></div>
-      </section>
-    </div>}
- </div>;
+ const cardRefs=React.useRef<(HTMLButtonElement|null)[]>([]);
+ const count=projects.length;
+ React.useEffect(()=>{
+   const media=window.matchMedia('(prefers-reduced-motion: reduce)');
+   const update=()=>setReduced(media.matches);update();
+   media.addEventListener('change',update);
+   return()=>media.removeEventListener('change',update);
+ },[]);
+ React.useEffect(()=>{
+   let raf=0;
+   const update=()=>{
+     const el=outer.current;
+     if(!el)return;
+     const rect=el.getBoundingClientRect();
+     const available=Math.max(1,rect.height-window.innerHeight);
+     desired.current=clamp(-rect.top/available,0,1)*Math.max(0,count-1);
+   };
+   const frame=()=>{
+     const delta=desired.current-progress.current;
+     progress.current=Math.abs(delta)<.0008?desired.current:smooth(progress.current,desired.current,reduced?1:.095);
+     const focus=progress.current;
+     const nearest=clamp(Math.round(focus),0,count-1);
+     setCurrent(prev=>prev===nearest?prev:nearest);
+     const narrow=window.innerWidth<768;
+     cardRefs.current.forEach((card,i)=>{
+       if(!card)return;
+       const d=i-focus;
+       const abs=Math.abs(d);
+       const depth=-(abs*170);
+       const y=d*(narrow?160:220);
+       const x=-(Math.min(abs,2.5))*(narrow?16:34);
+       const tilt=clamp(-d*12,-32,32);
+       const scale=1-Math.min(abs,2.5)*.12;
+       card.style.transform=`translate3d(calc(-50% + ${x}px),calc(-50% + ${y}px),${depth}px) rotateX(${tilt}deg) rotateY(${-clamp(d,-2,2)*7}deg) scale(${scale})`;
+       card.style.opacity=String(clamp(1-Math.max(0,abs-1.2)*.72,.08,1));
+       card.style.zIndex=String(100-Math.round(abs*10));
+       card.style.pointerEvents=abs<1.35?'auto':'none';
+       card.style.filter=`brightness(${clamp(1-abs*.23,.5,1)}) saturate(${clamp(1-abs*.14,.6,1)})`;
+     });
+     raf=requestAnimationFrame(frame);
+   };
+   update();raf=requestAnimationFrame(frame);
+   window.addEventListener('scroll',update,{passive:true});
+   window.addEventListener('resize',update);
+   return()=>{cancelAnimationFrame(raf);window.removeEventListener('scroll',update);window.removeEventListener('resize',update);};
+ },[count,reduced]);
+ React.useEffect(()=>{
+   if(opened===null)return;
+   const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape')setOpened(null);};
+   document.addEventListener('keydown',onKey);
+   const previous=document.body.style.overflow;
+   document.body.style.overflow='hidden';
+   return()=>{document.removeEventListener('keydown',onKey);document.body.style.overflow=previous;};
+ },[opened]);
+ const focusProject=(i:number)=>{
+   const el=outer.current;if(!el)return;
+   const top=window.scrollY+el.getBoundingClientRect().top;
+   const travel=Math.max(0,el.offsetHeight-window.innerHeight);
+   window.scrollTo({top:top+(i/Math.max(1,count-1))*travel,behavior:reduced?'instant':'smooth'});
+ };
+ return <>
+ <section ref={outer} className="relative w-full" style={{height:`calc(100svh + ${Math.max(1,count-1)*95}svh)`}} aria-label={heading}>
+  <div className="sticky top-0 isolate flex h-[100svh] min-h-[620px] w-full items-center overflow-hidden bg-[#050908]">
+   <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_55%_48%,rgba(26,87,63,.21),transparent_54%),radial-gradient(ellipse_at_52%_100%,rgba(32,113,78,.12),transparent_45%)]"/>
+   <div aria-hidden="true" className="pointer-events-none absolute left-[40%] top-1/2 h-[58vw] max-h-[750px] w-[58vw] max-w-[750px] -translate-y-1/2 rounded-full border border-[#85e9b5]/[.06] [transform:translateY(-50%)_rotateX(70deg)]"/>
+   <div aria-hidden="true" className="pointer-events-none absolute left-[42%] top-1/2 h-[46vw] max-h-[610px] w-[46vw] max-w-[610px] -translate-y-1/2 rounded-full border border-[#85e9b5]/[.07] [transform:translateY(-50%)_rotateX(70deg)]"/>
+   <div className="relative z-20 hidden w-[27%] shrink-0 pl-[max(5vw,24px)] text-left md:block">
+    <div className="mb-6 flex items-center gap-3 font-mono text-[11px] tracking-[.24em] text-[#85e9b5]"><span>01</span><span className="h-px w-9 bg-[#85e9b5]/70"/></div>
+    <h2 className="max-w-[330px] text-[clamp(34px,4.1vw,72px)] font-semibold leading-[1.02] tracking-[-.075em] text-white">{heading}</h2>
+    <p className="mt-7 max-w-[265px] text-sm leading-7 text-white/45">{subtitle}</p>
+    <div className="mt-16 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[.18em] text-[#85e9b5]/70"><span className="h-14 w-px bg-gradient-to-b from-[#85e9b5] to-transparent"/><span>{locale==='pt'?'Role para explorar':'Scroll to explore'}</span></div>
+   </div>
+   <div className="pointer-events-none absolute left-5 top-[10%] z-20 max-w-[60%] text-left md:hidden"><span className="font-mono text-[10px] tracking-[.2em] text-[#85e9b5]">01 / {locale==='pt'?'PROJETOS':'PROJECTS'}</span><h2 className="mt-2 text-3xl font-semibold leading-none tracking-[-.06em] text-white">{heading}</h2></div>
+   <div className="pointer-events-none absolute inset-x-0 top-[24%] bottom-[10%] z-10 md:left-[26%] md:right-[24%] md:top-[6%] md:bottom-[5%]" style={{perspective:'1350px',perspectiveOrigin:'50% 45%'}}>
+    <div className="absolute inset-0" style={{transformStyle:'preserve-3d'}}>
+     {projects.map((p,i)=><button key={p.name} ref={node=>{cardRefs.current[i]=node;}} type="button" aria-label={selectLabel+' '+p.name} onClick={()=>{if(current===i)setOpened(i);else focusProject(i);}} className="pointer-events-auto absolute left-1/2 top-1/2 h-[clamp(150px,25vw,295px)] w-[min(75vw,540px)] overflow-hidden rounded-2xl border border-[#85e9b5]/35 bg-[#0b1510] text-left shadow-[0_30px_100px_#000d,0_0_32px_#3ecf8e18] transition-[border-color,box-shadow] duration-300 hover:border-[#85e9b5]/80 hover:shadow-[0_30px_100px_#000d,0_0_42px_#3ecf8e44] focus-visible:outline-2 focus-visible:outline-[#85e9b5] md:h-[clamp(185px,26vw,340px)] md:w-[min(43vw,600px)]" style={{transform:'translate(-50%,-50%)',pointerEvents:'auto'}}>
+      <div className="absolute inset-0 bg-[#0a1310]">
+       {p.image?<img src={p.image} alt="" className="h-full w-full object-cover" onError={e=>{e.currentTarget.style.display='none';}}/>:p.video?<video src={p.video} autoPlay muted loop playsInline preload="metadata" className="h-full w-full object-cover"/>:<div className="flex h-full items-center justify-center bg-[radial-gradient(ellipse,#164f35,transparent_70%)]"><span className="font-mono text-3xl font-bold text-[#85e9b5]">{p.name}</span></div>}
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-[#020a06]/95 via-transparent to-black/10"/>
+      <div className="absolute inset-x-5 bottom-4 flex items-end justify-between gap-3"><div><span className="font-mono text-[9px] uppercase tracking-[.2em] text-[#85e9b5]">{p.category}</span><p className="mt-1 text-xl font-semibold tracking-[-.05em] text-white md:text-2xl">{p.name}</p></div><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/25 bg-black/30 text-white"><ArrowUpRight size={17}/></span></div>
+     </button>)}
+    </div>
+   </div>
+   <div className="pointer-events-none absolute bottom-[4%] left-5 right-5 z-20 flex items-end justify-between gap-5 md:bottom-auto md:left-auto md:right-[4%] md:top-1/2 md:w-[21%] md:-translate-y-1/2 md:block">
+    <div className="max-w-[65%] rounded-xl border border-white/10 bg-[#07110be8] p-3 text-left backdrop-blur-lg md:max-w-none md:border-none md:bg-transparent md:p-0 md:backdrop-blur-none" key={current}>
+     <span className="font-mono text-[10px] uppercase tracking-[.18em] text-[#85e9b5]">{String(current+1).padStart(2,'0')} / {String(count).padStart(2,'0')} · {projects[current]?.category}</span>
+     <h3 className="mt-2 text-lg font-semibold tracking-[-.045em] text-white md:mt-4 md:text-[clamp(22px,2.3vw,38px)]">{projects[current]?.name}</h3>
+     <p className="mt-2 line-clamp-2 text-[11px] leading-5 text-white/60 md:mt-4 md:line-clamp-none md:text-sm md:leading-6">{projects[current]?.description}</p>
+     <div className="mt-5 hidden flex-wrap gap-2 md:flex">{projects[current]?.stack.map(tech=><span key={tech} className="rounded-full border border-white/15 px-3 py-1.5 text-[10px] text-white/70">{tech}</span>)}</div>
+    </div>
+    <div className="flex flex-col gap-3 md:absolute md:-right-7 md:top-0">{projects.map((p,i)=><span key={p.name} className={'block h-7 w-[2px] transition-colors duration-500 '+(current===i?'bg-[#85e9b5]':'bg-white/20')}/>)}</div>
+   </div>
+  </div>
+ </section>
+ {opened!==null&&<div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur-xl sm:p-8" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setOpened(null);}}>
+  <section role="dialog" aria-modal="true" aria-label={projects[opened].name} className="relative max-h-[90dvh] w-full max-w-4xl overflow-y-auto rounded-3xl border border-[#85e9b5]/30 bg-[#111915] text-left text-white shadow-[0_30px_120px_#000]">
+   <button type="button" onClick={()=>setOpened(null)} aria-label={closeLabel} className="absolute right-5 top-5 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white hover:text-[#85e9b5]"><X size={20}/></button>
+   <div className="relative h-52 overflow-hidden bg-[#08110b] sm:h-80">{projects[opened].image?<img src={projects[opened].image} alt="" className="h-full w-full object-contain" onError={e=>{e.currentTarget.style.display='none';}}/>:projects[opened].video?<AutoplayVideo src={projects[opened].video!} className="h-full w-full object-cover" ariaLabel={projects[opened].name}/>:<div className="h-full bg-[radial-gradient(circle_at_center,#3ecf8e45,transparent_65%)]"/>}<div className="absolute inset-0 bg-gradient-to-t from-[#111915] to-transparent"/></div>
+   <div className="relative -mt-8 px-6 pb-9 sm:px-10"><span className="font-mono text-xs tracking-[.2em] text-[#85e9b5]">{projects[opened].category}</span><h3 className="mt-3 text-4xl font-semibold tracking-[-.06em] sm:text-6xl">{projects[opened].name}</h3><p className="mt-5 max-w-2xl text-base leading-8 text-white/65">{projects[opened].description}</p><div className="mt-7 flex flex-wrap gap-2">{projects[opened].stack.map(item=><span key={item} className="rounded-full border border-white/15 px-4 py-2 text-xs text-white/75">{item}</span>)}</div><div className="mt-8 flex flex-wrap gap-4">{projects[opened].links.map(link=><a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-[#85e9b5]/40 px-5 py-3 text-sm text-[#85e9b5] transition hover:bg-[#85e9b5] hover:text-[#08110b]">{link.label}<ArrowUpRight size={16}/></a>)}</div></div>
+  </section>
+ </div>}
+ </>;
 }
