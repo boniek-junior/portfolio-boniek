@@ -8,7 +8,6 @@ type Project = {name:string;category:string;description:string;stack:string[];im
 type Props = {projects:Project[];viewDetails:string;closeLabel:string;selectLabel:string;heading:string;subtitle:string;locale:string};
 const clamp=(n:number,a:number,b:number)=>Math.max(a,Math.min(b,n));
 const smooth=(a:number,b:number,t:number)=>a+(b-a)*t;
-const wrap=(n:number,size:number)=>((n%size)+size)%size;
 
 export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,heading,subtitle,locale}:Props){
  const outer=React.useRef<HTMLElement>(null);
@@ -36,7 +35,7 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
    };
    const frame=()=>{
      const delta=desired.current-progress.current;
-     progress.current=Math.abs(delta)<.0008?desired.current:smooth(progress.current,desired.current,reduced?1:.095);
+     progress.current=Math.abs(delta)<.0005?desired.current:smooth(progress.current,desired.current,reduced?1:.065);
      const focus=progress.current;
      const nearest=clamp(Math.round(focus),0,count-1);
      setCurrent(prev=>prev===nearest?prev:nearest);
@@ -45,11 +44,11 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
        if(!card)return;
        const d=i-focus;
        const abs=Math.abs(d);
-       const depth=-(abs*170);
-       const y=d*(narrow?160:220);
+       const depth=-(abs*205);
+       const y=d*(narrow?190:275);
        const x=-(Math.min(abs,2.5))*(narrow?16:34);
-       const tilt=clamp(-d*12,-32,32);
-       const scale=1-Math.min(abs,2.5)*.12;
+       const tilt=clamp(-d*16,-35,35);
+       const scale=1-Math.min(abs,2.5)*.13;
        card.style.transform=`translate3d(calc(-50% + ${x}px),calc(-50% + ${y}px),${depth}px) rotateX(${tilt}deg) rotateY(${-clamp(d,-2,2)*7}deg) scale(${scale})`;
        card.style.opacity=String(clamp(1-Math.max(0,abs-1.2)*.72,.08,1));
        card.style.zIndex=String(100-Math.round(abs*10));
@@ -78,8 +77,8 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
    window.scrollTo({top:top+(i/Math.max(1,count-1))*travel,behavior:reduced?'instant':'smooth'});
  };
  return <>
- <section ref={outer} className="relative w-full" style={{height:`calc(100svh + ${Math.max(1,count-1)*95}svh)`}} aria-label={heading}>
-  <div className="sticky top-0 isolate flex h-[100svh] min-h-[620px] w-full items-center overflow-hidden bg-[#050908]">
+ <section ref={outer} className="relative w-full" style={{height:`calc(100svh + ${Math.max(1,count-1)*125}svh)`}} aria-label={heading}>
+  <div className="sticky top-0 isolate flex h-[100svh] w-full items-center overflow-hidden bg-[#050908]">
    <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_55%_48%,rgba(26,87,63,.21),transparent_54%),radial-gradient(ellipse_at_52%_100%,rgba(32,113,78,.12),transparent_45%)]"/>
    <div aria-hidden="true" className="pointer-events-none absolute left-[40%] top-1/2 h-[58vw] max-h-[750px] w-[58vw] max-w-[750px] -translate-y-1/2 rounded-full border border-[#85e9b5]/[.06] [transform:translateY(-50%)_rotateX(70deg)]"/>
    <div aria-hidden="true" className="pointer-events-none absolute left-[42%] top-1/2 h-[46vw] max-h-[610px] w-[46vw] max-w-[610px] -translate-y-1/2 rounded-full border border-[#85e9b5]/[.07] [transform:translateY(-50%)_rotateX(70deg)]"/>
