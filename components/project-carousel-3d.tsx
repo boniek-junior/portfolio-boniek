@@ -29,6 +29,9 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
  React.useEffect(()=>{
    if(window.matchMedia('(max-width: 767px)').matches)return;
    let raf=0;
+   let visible=true;
+   const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)update();},{rootMargin:'250px'});
+   if(outer.current)observer.observe(outer.current);
    const update=()=>{
      const el=outer.current;
      if(!el)return;
@@ -37,6 +40,7 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
      desired.current=clamp(-rect.top/available,0,1)*Math.max(0,count-1);
    };
    const frame=()=>{
+     if(!visible||document.hidden){raf=requestAnimationFrame(frame);return;}
      const delta=desired.current-progress.current;
      progress.current=Math.abs(delta)<.0005?desired.current:smooth(progress.current,desired.current,reduced?1:.065);
      const focus=progress.current;
@@ -63,11 +67,11 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
    update();raf=requestAnimationFrame(frame);
    window.addEventListener('scroll',update,{passive:true});
    window.addEventListener('resize',update);
-   return()=>{cancelAnimationFrame(raf);window.removeEventListener('scroll',update);window.removeEventListener('resize',update);};
+   return()=>{observer.disconnect();cancelAnimationFrame(raf);window.removeEventListener('scroll',update);window.removeEventListener('resize',update);};
  },[count,reduced]);
  React.useEffect(()=>{
    if(opened===null)return;
-   const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape')setOpened(null);};
+   const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape')setOpened(null);if(e.key==='Tab'){const dialog=document.querySelector('[role="dialog"]');const focusable=Array.from(dialog?.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')||[]);if(!focusable.length)return;const first=focusable[0],last=focusable[focusable.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}};
    document.addEventListener('keydown',onKey);
    returnFocus.current=document.activeElement as HTMLElement;
    requestAnimationFrame(()=>closeRef.current?.focus());
