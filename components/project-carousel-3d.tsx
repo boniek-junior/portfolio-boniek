@@ -30,7 +30,8 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
    if(window.matchMedia('(max-width: 767px)').matches)return;
    let raf=0;
    let visible=true;
-   const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)update();},{rootMargin:'250px'});
+   let running=true;
+   const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible&&!running){running=true;raf=requestAnimationFrame(frame);}if(visible)update();},{rootMargin:'250px'});
    if(outer.current)observer.observe(outer.current);
    const update=()=>{
      const el=outer.current;
@@ -40,7 +41,7 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
      desired.current=clamp(-rect.top/available,0,1)*Math.max(0,count-1);
    };
    const frame=()=>{
-     if(!visible||document.hidden){raf=requestAnimationFrame(frame);return;}
+     if(!visible||document.hidden){running=false;return;}
      const delta=desired.current-progress.current;
      progress.current=Math.abs(delta)<.0005?desired.current:smooth(progress.current,desired.current,reduced?1:.065);
      const focus=progress.current;
@@ -65,9 +66,11 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
      raf=requestAnimationFrame(frame);
    };
    update();raf=requestAnimationFrame(frame);
+   const onVisibility=()=>{if(!document.hidden&&visible&&!running){running=true;raf=requestAnimationFrame(frame);}};
+   document.addEventListener('visibilitychange',onVisibility);
    window.addEventListener('scroll',update,{passive:true});
    window.addEventListener('resize',update);
-   return()=>{observer.disconnect();cancelAnimationFrame(raf);window.removeEventListener('scroll',update);window.removeEventListener('resize',update);};
+   return()=>{document.removeEventListener('visibilitychange',onVisibility);observer.disconnect();cancelAnimationFrame(raf);window.removeEventListener('scroll',update);window.removeEventListener('resize',update);};
  },[count,reduced]);
  React.useEffect(()=>{
    if(opened===null)return;
