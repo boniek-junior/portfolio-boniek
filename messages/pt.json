@@ -26,7 +26,10 @@
     "minddrop": "Jogo arcade colaborativo desenvolvido em C com Raylib, inspirado em Space Invaders. Combina chefes, projéteis, power-ups e desafios de adivinhação. Contribuí com disparos de projéteis e drops de atributos.",
     "tag4": "PROJETO COLABORATIVO",
     "viewLive": "Abrir aplicação",
-    "playGame": "Testar o jogo"
+    "playGame": "Testar o jogo",
+    "viewDetails": "VER DETALHES",
+    "closeDetails": "Fechar detalhes",
+    "selectProject": "Selecionar projeto"
   },
   "about": {
     "eyebrow": "02 / SOBRE",
