@@ -16,6 +16,8 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
  const [current,setCurrent]=React.useState(0);
  const [opened,setOpened]=React.useState<number|null>(null);
  const [reduced,setReduced]=React.useState(false);
+ const closeRef=React.useRef<HTMLButtonElement>(null);
+ const returnFocus=React.useRef<HTMLElement|null>(null);
  const cardRefs=React.useRef<(HTMLButtonElement|null)[]>([]);
  const count=projects.length;
  React.useEffect(()=>{
@@ -25,6 +27,7 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
    return()=>media.removeEventListener('change',update);
  },[]);
  React.useEffect(()=>{
+   if(window.matchMedia('(max-width: 767px)').matches)return;
    let raf=0;
    const update=()=>{
      const el=outer.current;
@@ -66,9 +69,11 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
    if(opened===null)return;
    const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape')setOpened(null);};
    document.addEventListener('keydown',onKey);
+   returnFocus.current=document.activeElement as HTMLElement;
+   requestAnimationFrame(()=>closeRef.current?.focus());
    const previous=document.body.style.overflow;
    document.body.style.overflow='hidden';
-   return()=>{document.removeEventListener('keydown',onKey);document.body.style.overflow=previous;};
+   return()=>{document.removeEventListener('keydown',onKey);document.body.style.overflow=previous;returnFocus.current?.focus();};
  },[opened]);
  const focusProject=(i:number)=>{
    const el=outer.current;if(!el)return;
@@ -77,7 +82,16 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
    window.scrollTo({top:top+(i/Math.max(1,count-1))*travel,behavior:reduced?'instant':'smooth'});
  };
  return <>
- <section ref={outer} className="relative w-full" style={{height:`calc(100svh + ${Math.max(1,count-1)*125}svh)`}} aria-label={heading}>
+ <section className="bg-[#050908] px-5 pb-16 pt-24 md:hidden" aria-label={heading}>
+  <p className="font-mono text-xs tracking-[.2em] text-[#85e9b5]">01 / {locale==='pt'?'PROJETOS':'PROJECTS'}</p>
+  <h2 className="mt-3 text-4xl font-semibold tracking-[-.06em] text-white">{heading}</h2>
+  <p className="mt-4 max-w-md text-sm leading-7 text-white/65">{subtitle}</p>
+  <div className="mt-8 grid gap-5">{projects.map((p,i)=><button key={p.name} type="button" onClick={()=>setOpened(i)} aria-label={selectLabel+' '+p.name} className="overflow-hidden rounded-2xl border border-[#85e9b5]/25 bg-[#101813] text-left focus-visible:outline-2 focus-visible:outline-[#85e9b5]">
+   <div className="relative h-48 overflow-hidden bg-[#0a1310]">{p.image?<img src={p.image} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover"/>:p.video?<video src={p.video} muted playsInline preload="none" className="h-full w-full object-cover"/>:<div className="flex h-full items-center justify-center text-2xl font-bold text-[#85e9b5]">{p.name}</div>}<div className="absolute inset-0 bg-gradient-to-t from-[#07110b] to-transparent"/></div>
+   <div className="p-5"><p className="font-mono text-xs uppercase tracking-[.12em] text-[#85e9b5]">{String(i+1).padStart(2,'0')} / {p.category}</p><h3 className="mt-2 text-2xl font-semibold text-white">{p.name}</h3><p className="mt-2 text-sm leading-6 text-white/65">{p.description}</p><span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[#85e9b5]">{viewDetails}<ArrowUpRight size={17}/></span></div>
+  </button>)}</div>
+ </section>
+ <section ref={outer} className="relative hidden w-full md:block" style={{height:`calc(100svh + ${Math.max(1,count-1)*125}svh)`}} aria-label={heading}>
   <div className="sticky top-0 isolate flex h-[100svh] w-full items-center overflow-hidden bg-[#050908]">
    <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_55%_48%,rgba(26,87,63,.21),transparent_54%),radial-gradient(ellipse_at_52%_100%,rgba(32,113,78,.12),transparent_45%)]"/>
    <div aria-hidden="true" className="pointer-events-none absolute left-[40%] top-1/2 h-[58vw] max-h-[750px] w-[58vw] max-w-[750px] -translate-y-1/2 rounded-full border border-[#85e9b5]/[.06] [transform:translateY(-50%)_rotateX(70deg)]"/>
@@ -113,7 +127,7 @@ export function ProjectCarousel3D({projects,viewDetails,closeLabel,selectLabel,h
  </section>
  {opened!==null&&<div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur-xl sm:p-8" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setOpened(null);}}>
   <section role="dialog" aria-modal="true" aria-label={projects[opened].name} className="relative max-h-[90dvh] w-full max-w-4xl overflow-y-auto rounded-3xl border border-[#85e9b5]/30 bg-[#111915] text-left text-white shadow-[0_30px_120px_#000]">
-   <button type="button" onClick={()=>setOpened(null)} aria-label={closeLabel} className="absolute right-5 top-5 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white hover:text-[#85e9b5]"><X size={20}/></button>
+   <button type="button" onClick={()=>setOpened(null)} aria-label={closeLabel} ref={closeRef} className="absolute right-5 top-5 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white hover:text-[#85e9b5]"><X size={20}/></button>
    <div className="relative h-52 overflow-hidden bg-[#08110b] sm:h-80">{projects[opened].image?<img src={projects[opened].image} alt="" className="h-full w-full object-contain" onError={e=>{e.currentTarget.style.display='none';}}/>:projects[opened].video?<AutoplayVideo src={projects[opened].video!} className="h-full w-full object-cover" ariaLabel={projects[opened].name}/>:<div className="h-full bg-[radial-gradient(circle_at_center,#3ecf8e45,transparent_65%)]"/>}<div className="absolute inset-0 bg-gradient-to-t from-[#111915] to-transparent"/></div>
    <div className="relative -mt-8 px-6 pb-9 sm:px-10"><span className="font-mono text-xs tracking-[.2em] text-[#85e9b5]">{projects[opened].category}</span><h3 className="mt-3 text-4xl font-semibold tracking-[-.06em] sm:text-6xl">{projects[opened].name}</h3><p className="mt-5 max-w-2xl text-base leading-8 text-white/65">{projects[opened].description}</p><div className="mt-7 flex flex-wrap gap-2">{projects[opened].stack.map(item=><span key={item} className="rounded-full border border-white/15 px-4 py-2 text-xs text-white/75">{item}</span>)}</div><div className="mt-8 flex flex-wrap gap-4">{projects[opened].links.map(link=><a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-[#85e9b5]/40 px-5 py-3 text-sm text-[#85e9b5] transition hover:bg-[#85e9b5] hover:text-[#08110b]">{link.label}<ArrowUpRight size={16}/></a>)}</div></div>
   </section>
