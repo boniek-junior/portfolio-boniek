@@ -15,8 +15,6 @@ export function FooterVideo(){
 
   let hls:Hls|undefined;
   let initialized=false;
-  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduced)return;
   video.muted=true;
   video.defaultMuted=true;
 
@@ -38,13 +36,11 @@ export function FooterVideo(){
 
   video.addEventListener('canplay',tryPlay);
   };
-  const observer=new IntersectionObserver(entries=>{if(entries[0]?.isIntersecting){initialize();tryPlay();}else{video.pause();}},{rootMargin:'250px'});
-  observer.observe(video);
+  initialize();
   const onVisible=()=>{if(!document.hidden)tryPlay();};
   document.addEventListener('visibilitychange',onVisible);
 
   return ()=>{
-   observer.disconnect();
    video.removeEventListener('canplay',tryPlay);
    document.removeEventListener('visibilitychange',onVisible);
    hls?.destroy();
@@ -59,7 +55,7 @@ export function FooterVideo(){
   loop
   muted
   playsInline
-  preload="none"
+  preload="auto"
   aria-hidden="true"
   className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover [filter:grayscale(1)_sepia(.65)_hue-rotate(85deg)_saturate(2)_brightness(.85)_contrast(1.12)]"
  />;
