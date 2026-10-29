@@ -14,6 +14,9 @@ export function FooterVideo(){
   if(!video)return;
 
   let hls:Hls|undefined;
+  let initialized=false;
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced)return;
   video.muted=true;
   video.defaultMuted=true;
 
@@ -22,6 +25,7 @@ export function FooterVideo(){
    if(result)void result.catch(()=>{});
   };
 
+  const initialize=()=>{if(initialized)return;initialized=true;
   if(Hls.isSupported()){
    hls=new Hls();
    hls.loadSource(VIDEO_URL);
@@ -33,10 +37,14 @@ export function FooterVideo(){
   }
 
   video.addEventListener('canplay',tryPlay);
+  };
+  const observer=new IntersectionObserver(entries=>{if(entries[0]?.isIntersecting){initialize();tryPlay();}else{video.pause();}},{rootMargin:'250px'});
+  observer.observe(video);
   const onVisible=()=>{if(!document.hidden)tryPlay();};
   document.addEventListener('visibilitychange',onVisible);
 
   return ()=>{
+   observer.disconnect();
    video.removeEventListener('canplay',tryPlay);
    document.removeEventListener('visibilitychange',onVisible);
    hls?.destroy();
@@ -51,7 +59,7 @@ export function FooterVideo(){
   loop
   muted
   playsInline
-  preload="auto"
+  preload="none"
   aria-hidden="true"
   className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover [filter:grayscale(1)_sepia(.65)_hue-rotate(85deg)_saturate(2)_brightness(.85)_contrast(1.12)]"
  />;
