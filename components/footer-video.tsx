@@ -15,7 +15,7 @@ export function FooterVideo(){
   let hls:Hls|undefined;
   let fallback=false;
   let ready=false;
-  let timeout:number|undefined;
+  const timer:{id:number|undefined}={id:undefined};
   video.muted=true;
   video.defaultMuted=true;
   video.playsInline=true;
@@ -25,10 +25,10 @@ export function FooterVideo(){
    const attempt=video.play();
    if(attempt)void attempt.catch(()=>{});
   };
-  const useFallback=()=>{
+  const activateFallback=()=>{
    if(fallback)return;
    fallback=true;
-   if(timeout!==undefined)window.clearTimeout(timeout);
+   if(timer.id!==undefined)window.clearTimeout(timer.id);
    hls?.destroy();
    hls=undefined;
    video.pause();
@@ -38,10 +38,10 @@ export function FooterVideo(){
   };
   const onReady=()=>{
    ready=true;
-   if(timeout!==undefined)window.clearTimeout(timeout);
+   if(timer.id!==undefined)window.clearTimeout(timer.id);
    tryPlay();
   };
-  const onError=()=>useFallback();
+  const onError=()=>activateFallback();
   const onVisibility=()=>{if(!document.hidden)tryPlay();};
   video.addEventListener('loadeddata',onReady);
   video.addEventListener('canplay',tryPlay);
@@ -50,10 +50,10 @@ export function FooterVideo(){
   window.addEventListener('pageshow',tryPlay);
 
   // Avoid an indefinitely black footer if the HLS stream stalls.
-  timeout=window.setTimeout(()=>{if(!ready)useFallback();},7000);
+  timer.id=window.setTimeout(()=>{if(!ready)activateFallback();},7000);
   if(Hls.isSupported()){
    hls=new Hls({enableWorker:true});
-   hls.on(Hls.Events.ERROR,(_event,data)=>{if(data.fatal)useFallback();});
+   hls.on(Hls.Events.ERROR,(_event,data)=>{if(data.fatal)activateFallback();});
    hls.on(Hls.Events.MANIFEST_PARSED,tryPlay);
    hls.attachMedia(video);
    hls.loadSource(VIDEO_URL);
@@ -61,11 +61,11 @@ export function FooterVideo(){
    video.src=VIDEO_URL;
    video.load();
   }else{
-   useFallback();
+   activateFallback();
   }
 
   return ()=>{
-   if(timeout!==undefined)window.clearTimeout(timeout);
+   if(timer.id!==undefined)window.clearTimeout(timer.id);
    document.removeEventListener('visibilitychange',onVisibility);
    window.removeEventListener('pageshow',tryPlay);
    video.removeEventListener('loadeddata',onReady);
